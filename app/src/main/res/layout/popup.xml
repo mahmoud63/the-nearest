@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:textAlignment="center"
+            android:hint="Title"
+            android:id="@+id/ET_Title"
+            android:layout_width="match_parent"
+            android:paddingBottom="10dp"
+            android:layout_height="100px"/>
+
+        <TextView
+            android:id="@+id/ET_Describtion"
+            android:textAlignment="center"
+            android:hint="Describtion"
+            android:layout_width="match_parent"
+            android:layout_height="300px"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/BT_Go"
+                android:text="Go to Map"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/BT_delete"
+                android:text="Delete Title"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

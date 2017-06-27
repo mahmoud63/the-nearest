@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Without Name</string>
+    <string name="action_settings">Settings</string>
+    <string name="recent_nevs">This String Value</string>
 </resources>

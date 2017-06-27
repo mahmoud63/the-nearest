@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mohammed.withoutname.ProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:background="#FF4B32">
+
+            <RelativeLayout
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="40dp"
+                android:layout_weight="1"
+                android:layout_height="60dp">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:background="#CDCDCD"
+                    android:layout_height="50dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp"
+                    android:textSize="20dp"
+                    android:textAlignment="center"
+                    android:text="M"/>
+            </RelativeLayout>
+
+
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="4"
+                android:textAlignment="center"
+                android:text="Mohammed El-Krnshawy"
+                android:padding="15dp"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:clickable="true"
+                android:onClick="Logout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_gravity="right">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/exit"
+                    android:layout_gravity="center"
+                    android:layout_weight="8"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Log out"
+                    android:textSize="16dp"
+                    android:textAlignment="center"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:text="My Public Places"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/LV_Public">
+
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:text="My Special Places"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/LV_Special">
+
+            </ListView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
