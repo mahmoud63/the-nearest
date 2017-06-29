@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mohammed.withoutname">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -16,15 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-
+            android:value="@string/google_maps_key" />
 
         <activity android:name=".StartSplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -32,14 +31,25 @@
         <android android:name=".HomeActivity" />
 
         <activity android:name=".AddPlaceActivity" />
-        <activity android:name=".SaveMyLocationActivity" />
-        <activity android:theme="@style/NoTitleBar" android:name=".LoginActivity" />
-        <activity android:name=".HomeActivityProfile" />
-        <activity android:theme="@style/NoTitleBar" android:name=".ProfileActivity" />
+        <activity
+            android:name=".SaveMyLocationActivity"
+            android:theme="@style/NoTitleBar" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/NoTitleBar" />
+        <activity
+            android:name=".HomeActivityProfile"
+            android:theme="@style/NoTitleBar" />
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/NoTitleBar" />
         <activity android:name=".HomeLoginActivity" />
-        <activity android:theme="@style/NoTitleBar" android:name=".SignupActivity"
-            android:label="Ezzat"/>
-        <activity android:name=".MapsActivity"/>
+        <activity
+            android:name=".SignupActivity"
+            android:label="Ezzat"
+            android:theme="@style/NoTitleBar" />
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".SearchTagActivity"/>
     </application>
 
 </manifest>

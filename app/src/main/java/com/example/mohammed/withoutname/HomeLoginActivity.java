@@ -16,7 +16,6 @@ public class HomeLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_login);
 
-        //PublicParamaters.Write("","ezzat",this);
 
         circleMenu=(CircleMenu)findViewById(R.id.circle_menu);
 

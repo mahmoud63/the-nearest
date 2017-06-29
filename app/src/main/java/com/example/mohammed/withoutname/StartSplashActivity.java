@@ -16,7 +16,7 @@ public class StartSplashActivity extends AppCompatActivity {
 
         EasySplashScreen easySplashScreen =new EasySplashScreen(StartSplashActivity.this)
                 .withFullScreen()
-                .withSplashTimeOut(3000).withLogo(R.drawable.home).withBackgroundColor(Color.parseColor("#074E72")).withHeaderText("Ezzat")
+                .withSplashTimeOut(3000).withLogo(R.drawable.home).withBackgroundColor(Color.parseColor("#30A400")).withHeaderText("Ezzat")
                 .withFooterText("Ouda").withBeforeLogoText("Before Logo").withAfterLogoText("After Logo");
 
 
@@ -28,6 +28,7 @@ public class StartSplashActivity extends AppCompatActivity {
 
         if (!PublicParamaters.Read("UserId.txt",this).isEmpty())
         {
+            PublicParamaters.UserRootId=PublicParamaters.Read("UserId.txt",this);
             easySplashScreen.withTargetActivity(HomeActivityProfile.class);
         }
         else {

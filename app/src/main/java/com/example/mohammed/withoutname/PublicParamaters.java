@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class PublicParamaters {
-    public static String UserRootId;
+    public static String UserRootId,CategoryName;
     public static List<User>UserInfo=new ArrayList<>();
 
     public static double lat,lon;
