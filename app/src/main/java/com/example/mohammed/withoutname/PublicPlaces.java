@@ -5,42 +5,59 @@ package com.example.mohammed.withoutname;
  */
 
 public class PublicPlaces {
+
+    public String Name;
     public double Lang;
     public double Lat;
-    public String Name;
     public String Location;
     public String Description;
     public String Category;
     public String WebsiteUrl;
-    public String Phone ;
-    public String TagArray [];
-    public String ImageUrl[];
-    public String MenuUrl[];
+    public String Phone;
+    public String Tag;
+    public String Image;
     public String Logo;
+    public String City;
+    public String OwnId;
+    public String WorkHour;
+    public float Distance;
 
-    public PublicPlaces(String logo,String name)
-    {
-        this.Logo=logo;
-        this.Name=name;
-    }
-    public PublicPlaces(String logo,String name,String location,double lang,double lat)
+
+    public PublicPlaces(String logo,String name,String location,double lang,double lat,float distance)
     {
         this.Logo=logo;
         this.Name=name;
         this.Location=location;
         this.Lang=lang;
         this.Lat=lat;
+        this.Distance=distance;
     }
-
-    public PublicPlaces(double lang,double lat,String name,String location,String description,String category
-    ,String websiteUrl,String phone,String tags[],String images[],String menu[])
+    public PublicPlaces(String logo,String name,String location,double lang,double lat,float distance,String tag
+    ,String description,String image,String phone,String websiteUrl,String workHour)
     {
-        this.Lang=lang;
-        this.Lat=lat;
+        this.Logo=logo;
         this.Name=name;
         this.Location=location;
+        this.Lang=lang;
+        this.Lat=lat;
+        this.Distance=distance;
+        this.Tag=tag;
         this.Description=description;
-        this.Category=category;
-        this.WebsiteUrl=websiteUrl;this.Phone=phone;this.TagArray=tags;this.ImageUrl=images;this.MenuUrl=menu;
+        this.Image=image;
+        this.Phone=phone;
+        this.WebsiteUrl=websiteUrl;
+        this.WorkHour=workHour;
+    }
+
+    //Search Cons
+    public PublicPlaces(float distance, String logo,String name
+            ,String description,String location,String websiteUrl,String workHour,
+                        String tag,String imageUrl,String phoneArray)
+    {
+        this.Distance=distance;
+        this.Logo=logo;
+        this.Name=name;
+        this.Description=description;this.Location=location;this.WebsiteUrl=websiteUrl;this.WorkHour=workHour;
+        this.Tag=tag;this.Image=imageUrl;this.Phone=phoneArray;
     }
 }

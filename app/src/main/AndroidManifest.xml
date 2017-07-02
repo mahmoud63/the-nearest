@@ -49,7 +49,11 @@
             android:label="Ezzat"
             android:theme="@style/NoTitleBar" />
         <activity android:name=".MapsActivity" />
-        <activity android:name=".SearchTagActivity"/>
+        <activity android:name=".SearchTagActivity" />
+        <activity android:name=".TabFragment1" />
+        <activity android:name=".TabFragment2" />
+        <activity android:name=".TabFragment3" />
+        <activity android:theme="@style/NoTitleBar" android:name=".ShowDetailsActivity" />
     </application>
 
 </manifest>

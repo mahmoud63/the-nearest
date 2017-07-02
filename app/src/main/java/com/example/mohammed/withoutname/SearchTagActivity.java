@@ -1,8 +1,10 @@
 package com.example.mohammed.withoutname;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +15,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -32,7 +33,9 @@ import java.util.Locale;
 public class SearchTagActivity extends AppCompatActivity {
     double longitude,latitude;
     String City;
-    EditText SearchText;
+    float Distance;
+    ArrayList<PublicPlaces> arrayList=new ArrayList <>();
+    ArrayList<PublicPlaces> arrayList2=new ArrayList <>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +43,22 @@ public class SearchTagActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_search_tag);
-
-
         MyLocation(this);
+        SearchText("",this);
 
+
+
+    }
+    public float GetDistance(double lat,double lon)
+    {
+        Location loc1 = new Location("");
+        loc1.setLatitude(latitude);
+        loc1.setLongitude(longitude);
+        Location loc2 = new Location("");
+        loc2.setLatitude(lat);
+        loc2.setLongitude(lon);
+        float distanceInMeters = loc1.distanceTo(loc2);
+        return Math.round(distanceInMeters/1000);
     }
 
     @Override
@@ -56,13 +71,36 @@ public class SearchTagActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                ListView listView=(ListView)findViewById(R.id.TagList);
+                String space=" ";
+                if(query.isEmpty()||query.equals(space))
+                {
+                    listView.setAdapter(new CustomListAdapter(SearchTagActivity.this, arrayList));
+                }
+                else
+                {
+                    for (int i=0;i<arrayList.size();i++)
+                    {
+                        if(arrayList.get(i).Tag.contains(query))
+                        {
+                            arrayList2.add(arrayList.get(i));
+                        }
+                    }
+                    if(arrayList2.size()==0)
+                    {
+                        listView.setAdapter(null);
+                    }
+                    else {
+                        listView.setAdapter(new CustomListAdapter(SearchTagActivity.this, arrayList2));
+                    }
+                }
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //adapter.getFilter().filter(newText);
-                Toast.makeText(SearchTagActivity.this,newText, Toast.LENGTH_SHORT).show();
+
                 return false;
             }
         });
@@ -100,7 +138,7 @@ public class SearchTagActivity extends AppCompatActivity {
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
                 for (int i = 0; i < 1; i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(0))
+                    strReturnedAddress
                             .append(returnedAddress.getAddressLine(2));
                 }
                 strAdd = strReturnedAddress.toString();
@@ -115,32 +153,55 @@ public class SearchTagActivity extends AppCompatActivity {
         return strAdd;
     }
 
-    public void jku(final String Text, final Context context)
+    public void SearchText(final String Text, final Context context)
     {
         final ListView listView=(ListView)findViewById(R.id.TagList);
-        final ArrayList<PublicPlaces> arrayList=new ArrayList <>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        Query query = reference.child("Places").orderByChild("Place Lng").startAt(25.0).endAt(26.0);
+        Query query = reference.child("Places").orderByChild("Place Category").equalTo(PublicParamaters.CategoryName.toUpperCase());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        if (Double.parseDouble(issue.child("Place Lat").getValue() + "")>=56
-                                &&Double.parseDouble(issue.child("Place Lat").getValue() + "")<=57
-                                && issue.child("Place Tags").getValue().toString().contains(Text)) {
+
+                    try {
+                        //Start Activity Without Search , Category Only
+                        for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                                Distance = GetDistance(Double.parseDouble(""+issue.child("Place Lat").getValue()) , Double.parseDouble(""+issue.child("Place Lng").getValue()));
+                               /* arrayList.add(new PublicPlaces(Distance, issue.child("Place Logo").getValue().toString(),
+                                        issue.child("Place Name").getValue().toString(), issue.child("Place Description").getValue().toString(),
+                                        issue.child("Place Location").getValue().toString(), issue.child("Place Website").getValue().toString(),
+                                        issue.child("Place WorkHour").getValue().toString(), issue.child("Place Tags").getValue().toString(),
+                                        issue.child("Place Images").getValue().toString(), issue.child("Place Phone").getValue().toString()));*/
                             arrayList.add(new PublicPlaces(issue.child("Logo").getValue() + ""
                                     , issue.child("Place Name").getValue() + ""
                                     , issue.child("Place Location").getValue() + ""
                                     , Double.parseDouble("" + issue.child("Place Lng").getValue())
-                                    , Double.parseDouble(issue.child("Place Lat").getValue() + "")));
+                                    , Double.parseDouble(issue.child("Place Lat").getValue() + ""),Distance
+                                    ,issue.child("Place Tags").getValue()+""
+                                    ,issue.child("Place Description").getValue()+""
+                                    ,issue.child("Place Images").getValue()+""
+                                    ,issue.child("Place Phone").getValue()+""
+                                    ,issue.child("Place Website").getValue()+""
+                                    ,issue.child("Place WorkHour").getValue()+""
+                            ));
                         }
+                    }
+                    catch (Exception Ex)
+                    {
+                        Toast.makeText(context, Ex.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
                     Toast.makeText(SearchTagActivity.this, "Mis", Toast.LENGTH_SHORT).show();
                 }
-                listView.setAdapter(new CustomAdapter(SearchTagActivity.this,arrayList));
+                try {
+                    Toast.makeText(SearchTagActivity.this, "" + arrayList.size(), Toast.LENGTH_SHORT).show();
+
+                    listView.setAdapter(new CustomListAdapter(SearchTagActivity.this,arrayList));
+                }catch (Exception ex)
+                {
+                    Toast.makeText(SearchTagActivity.this,ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -157,9 +218,10 @@ public class SearchTagActivity extends AppCompatActivity {
 
                         final String itemValue = (String) listView.getItemAtPosition(position);
                         Toast.makeText(SearchTagActivity.this, itemValue, Toast.LENGTH_SHORT).show();
-
-                       /* Intent show=new Intent(context,ShowDetailsActivity.class);
-                        startActivity(show);*/
+                        PublicParamaters.lat=23;
+                        PublicParamaters.lon=35;
+                        Intent show=new Intent(context,ShowDetailsActivity.class);
+                        startActivity(show);
 
 
                     }

@@ -61,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     , issue.child("User Name").getValue() + ""
                                     , issue.child("Telephone").getValue() + ""
                                     , Double.parseDouble(""+36.5)
-                                    , Double.parseDouble(""+69.14)));
+                                    , Double.parseDouble(""+69.14),2));
                     }
                 }
                 else {
