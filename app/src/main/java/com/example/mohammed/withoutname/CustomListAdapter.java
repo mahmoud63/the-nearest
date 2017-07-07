@@ -57,6 +57,7 @@ public class CustomListAdapter extends BaseAdapter {
 
             holder=new ViewHolder();
 
+
             holder.logo_pic=(ImageView) row.findViewById(R.id.Logo_Pic);
         holder.place_name=(TextView) row.findViewById(R.id.Name_Text);
         holder.place_location=(TextView) row.findViewById(R.id.Location_Text);

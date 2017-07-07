@@ -21,16 +21,15 @@ public class PublicPlaces {
     public String OwnId;
     public String WorkHour;
     public float Distance;
+    public String RootId;
 
 
-    public PublicPlaces(String logo,String name,String location,double lang,double lat,float distance)
+
+    public PublicPlaces(String logo,String name,String rootId)
     {
         this.Logo=logo;
         this.Name=name;
-        this.Location=location;
-        this.Lang=lang;
-        this.Lat=lat;
-        this.Distance=distance;
+        this.RootId=rootId;
     }
     public PublicPlaces(String logo,String name,String location,double lang,double lat,float distance,String tag
     ,String description,String image,String phone,String websiteUrl,String workHour)

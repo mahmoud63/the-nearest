@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 
 import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
+import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +39,36 @@ public class HomeActivityProfile extends AppCompatActivity {
 
 
 
+
         circleMenu=(CircleMenu)findViewById(R.id.circle_menu);
+
+        circleMenu.setVisibility(View.INVISIBLE);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        albumList = new ArrayList<>();
-        adapter = new AlbumsAdapter(this, albumList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        final FloatingActionButton floatingActionButton=(FloatingActionButton)findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (circleMenu.isOpened()) {
+                    circleMenu.closeMenu();
+                } else {
+                    circleMenu.setVisibility(View.VISIBLE);
+                    circleMenu.openMenu();
+                }
+            }
+        });
+
+
+        albumList = new ArrayList<>();
+        adapter = new AlbumsAdapter(this, albumList,circleMenu);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(7), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         prepareAlbums();
 
 
@@ -57,6 +76,24 @@ public class HomeActivityProfile extends AppCompatActivity {
         circleMenu.addSubMenu(Color.parseColor("#258CFF"), R.drawable.i1)
                 .addSubMenu(Color.parseColor("#30A400"), R.drawable.i2)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.i3);
+
+
+
+
+        circleMenu.setOnMenuStatusChangeListener(new OnMenuStatusChangeListener() {
+            @Override
+            public void onMenuOpened() {
+                recyclerView.setAlpha((float) 0.3);
+                floatingActionButton.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onMenuClosed() {
+                recyclerView.setAlpha((float)1.0);
+                circleMenu.setVisibility(View.INVISIBLE);
+                floatingActionButton.setVisibility(View.VISIBLE);
+            }
+        });
 
         circleMenu.setOnMenuSelectedListener(new OnMenuSelectedListener() {
 

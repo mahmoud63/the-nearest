@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -44,11 +42,11 @@ public class CustomAdapter extends BaseAdapter {
         return placesList.indexOf(getItem(position));
     }
 
+
     private class ViewHolder
     {
         ImageView logo_pic;
         TextView place_name;
-        Button Delete,Edit;
     }
 
     @Override
@@ -62,31 +60,15 @@ public class CustomAdapter extends BaseAdapter {
 
             holder.logo_pic=(ImageView) row.findViewById(R.id.Logo_Pic);
         holder.place_name=(TextView) row.findViewById(R.id.Name_Text);
-        holder.Delete=(Button)row.findViewById(R.id.DeleteButton);
-        holder.Edit=(Button)row.findViewById(R.id.EditButton);
-       /* holder.place_location=(TextView) row.findViewById(R.id.Location_Text);
-        holder.place_distance=(TextView) row.findViewById(R.id.Distance_Text);*/
 
-          // PublicPlaces publicPlaces=placesList.get(position);
-
+        try {
             Picasso.with(context)
-                    .load(placesList.get(position).Logo).placeholder(R.mipmap.ic_launcher_round).resize(80,80)
+                    .load(placesList.get(position).Logo).placeholder(R.mipmap.ic_launcher_round).resize(80, 80)
                     .into(holder.logo_pic);
+        }
+        catch (Exception ex) {
+        }
         holder.place_name.setText(placesList.get(position).Name);
-       /* holder.place_location.setText(placesList.get(position).Location);
-        holder.place_distance.setText(""+placesList.get(position).Lang);*/
-       holder.Delete.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Toast.makeText(context, ""+placesList.get(position).Name, Toast.LENGTH_SHORT).show();
-           }
-       });
-        holder.Edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         return row;
     }

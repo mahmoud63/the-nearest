@@ -6,4 +6,5 @@
     <string name="backdrop_title">LOVE MUSICS</string>
     <string name="backdrop_subtitle">This season top 20 music</string>
     <string name="recent_nevs">This String Value</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

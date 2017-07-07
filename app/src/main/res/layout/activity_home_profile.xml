@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
+    android:id="@+id/ty"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,28 +8,53 @@
     android:layout_height="match_parent"
     tools:context="com.example.mohammed.withoutname.HomeActivityProfile">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/io"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:layout_weight="10"/>
+            android:scrollbars="vertical" />
 
         <com.hitomi.cmlibrary.CircleMenu
             android:id="@+id/circle_menu"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
             android:layout_centerInParent="true"
             />
 
 
-    </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            app:srcCompat="@drawable/home" >
+        </android.support.design.widget.FloatingActionButton>
 
 </RelativeLayout>
+
+
+
+
+
+
+
+
+
+</FrameLayout>

@@ -31,9 +31,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:layout_below="@id/thumbnail"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
+                android:padding="5dp"
                 android:textColor="#000"
                 android:textSize="15dp" />
         </RelativeLayout>

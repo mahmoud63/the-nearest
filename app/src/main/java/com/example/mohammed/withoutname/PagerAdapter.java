@@ -1,5 +1,6 @@
 package com.example.mohammed.withoutname;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -10,14 +11,16 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
+    Context context;
 
     public PagerAdapter(FragmentManager fm)
     {
         super(fm);
     }
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    public PagerAdapter(FragmentManager fm, int NumOfTabs,Context context) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
+        this.context=context;
     }
 
     @Override
@@ -25,14 +28,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                TabFragment1 tab1 = new TabFragment1();
+                TabFragment2 tab1 = new TabFragment2();
                 return tab1;
             case 1:
-                TabFragment2 tab2 = new TabFragment2();
+                TabFragment1 tab2 = new TabFragment1(context);
                 return tab2;
-            case 2:
-                TabFragment3 tab3 = new TabFragment3();
-                return tab3;
             default:
                 return null;
         }

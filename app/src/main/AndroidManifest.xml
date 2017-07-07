@@ -20,7 +20,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".StartSplashActivity">
+        <activity
+            android:name=".StartSplashActivity"
+            android:theme="@style/NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +45,9 @@
         <activity
             android:name=".ProfileActivity"
             android:theme="@style/NoTitleBar" />
-        <activity android:name=".HomeLoginActivity" />
+        <activity
+            android:name=".HomeLoginActivity"
+            android:theme="@style/NoTitleBar" />
         <activity
             android:name=".SignupActivity"
             android:label="Ezzat"
@@ -52,8 +56,10 @@
         <activity android:name=".SearchTagActivity" />
         <activity android:name=".TabFragment1" />
         <activity android:name=".TabFragment2" />
-        <activity android:name=".TabFragment3" />
-        <activity android:theme="@style/NoTitleBar" android:name=".ShowDetailsActivity" />
+        <activity
+            android:name=".ShowDetailsActivity"
+            android:theme="@style/NoTitleBar" />
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>

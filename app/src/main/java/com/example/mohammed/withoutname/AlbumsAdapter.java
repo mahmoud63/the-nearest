@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hitomi.cmlibrary.CircleMenu;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHolder> {
 
+    private CircleMenu circleMenu;
     private Context mContext;
     private List<Album> albumList;
 
@@ -33,15 +35,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            RL=(RelativeLayout)view.findViewById(R.id.RL);
-            cardView=(CardView)view.findViewById(R.id.card_view);
+            RL = (RelativeLayout) view.findViewById(R.id.RL);
+            cardView = (CardView) view.findViewById(R.id.card_view);
         }
     }
 
-
-    public AlbumsAdapter(Context mContext, List<Album> albumList) {
+    public AlbumsAdapter(Context mContext, List<Album> albumList, CircleMenu circleMenu) {
         this.mContext = mContext;
         this.albumList = albumList;
+        this.circleMenu = circleMenu;
     }
 
     @Override
@@ -56,7 +58,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Album album = albumList.get(position);
         holder.title.setText(album.getName());
-        // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -73,15 +74,19 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return albumList.size();
     }
 
-    public void GoCategory(String CategoryName)
-    {
-        PublicParamaters.CategoryName=CategoryName;
-        Intent intent=new Intent(mContext,SearchTagActivity.class);
-        mContext.startActivity(intent);
+    public void GoCategory(String CategoryName) {
+        if (circleMenu.isOpened()) {
+            circleMenu.closeMenu();
+        } else {
+            PublicParamaters.CategoryName = CategoryName;
+            Intent intent = new Intent(mContext, SearchTagActivity.class);
+            mContext.startActivity(intent);
+        }
     }
 }
