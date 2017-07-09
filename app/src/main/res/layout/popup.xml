@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:cardCornerRadius="20sp"
+        android:padding="20sp">
+
+        <LinearLayout
+            android:layout_margin="30sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Place Title"
+           android:textSize="10sp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8sp" />
 
         <TextView
             android:textAlignment="center"
@@ -15,15 +34,28 @@
             android:id="@+id/ET_Title"
             android:layout_width="match_parent"
             android:paddingBottom="10dp"
-            android:layout_height="100px"/>
+            android:layout_height="50px"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Place Title"
+            android:textSize="10sp"/>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8sp" />
         <TextView
             android:id="@+id/ET_Describtion"
             android:textAlignment="center"
-            android:hint="Describtion"
+            android:hint="Description"
             android:layout_width="match_parent"
-            android:layout_height="300px"/>
-
+            android:layout_height="80px"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,15 +67,23 @@
                 android:id="@+id/BT_Go"
                 android:text="Go to Map"/>
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/BT_delete"
-                android:text="Delete Title"/>
+                android:text="Delete Place"/>
+        </LinearLayout>
+
         </LinearLayout>
 
 
-    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

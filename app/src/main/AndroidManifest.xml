@@ -59,7 +59,7 @@
         <activity
             android:name=".ShowDetailsActivity"
             android:theme="@style/NoTitleBar" />
-        <activity android:name=".EditActivity"></activity>
+        <activity android:theme="@style/NoTitleBar" android:name=".EditActivity"></activity>
     </application>
 
 </manifest>

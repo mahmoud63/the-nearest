@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_profile);
 
+        RetriveLocal();
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
@@ -69,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
     public void RetrivePublic(final String Text, final Context context)
     {
         try {
@@ -159,6 +162,14 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                     //TO Here
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        }
+                    });
+
                 }
 
                 @Override
@@ -172,8 +183,6 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this,ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
     public void Logout()
     {
         PublicParamaters.UserRootId=null;
@@ -186,8 +195,6 @@ public class ProfileActivity extends AppCompatActivity {
     {
         final SwipeMenuListView listView;
         final ArrayList<MyPlacesDetails>arrayList;
-        int Id;
-        String Title,Description,Lat,lon;
         listView = (SwipeMenuListView) findViewById(R.id.listView);
         arrayList=Database.RetrivePlaces(this);
 
@@ -203,7 +210,7 @@ public class ProfileActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1,jj);
         listView.setAdapter(adapter);
-
+//Swipe null
         listView.setMenuCreator(null);
         listView.setSwipeDirection(AbsListView.CHOICE_MODE_NONE);
 
@@ -225,12 +232,14 @@ public class ProfileActivity extends AppCompatActivity {
                         final String lon=arrayList.get(index).longitude;
 
 
+
                         //PopUp
 
                         LayoutInflater factory = LayoutInflater.from(ProfileActivity.this);
                         final View deleteDialogView = factory.inflate(R.layout.popup, null);
                         final AlertDialog deleteDialog =
-                                new AlertDialog.Builder(ProfileActivity.this).create();
+                                new AlertDialog.Builder(ProfileActivity.this)
+                                        .create();
                         deleteDialog.setView(deleteDialogView);
 
                         //Connect to componanent in popup
@@ -264,6 +273,8 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 try{
+                                    adapter.remove(itemValue);
+                                    adapter.notifyDataSetChanged();
                                     Toast.makeText(ProfileActivity.this, "Here", Toast.LENGTH_SHORT).show();
                                     Database.DeletePlace(Id,ProfileActivity.this);
                                     deleteDialog.dismiss();

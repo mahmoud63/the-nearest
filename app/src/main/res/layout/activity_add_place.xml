@@ -1,9 +1,341 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mohammed.withoutname.AddPlaceActivity">
+    android:orientation="vertical"
+    tools:context="com.example.mohammed.withoutname.EditActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/RelativeLayout02"
+        android:layout_weight="1">
+
+        <ViewFlipper
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Flipper">
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/Rel1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Choose logo"
+                        android:id="@+id/TVlogo"
+                        />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="4sp"
+                        android:layout_below="@+id/TVlogo"
+                        android:id="@+id/jk"/>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_below="@+id/jk"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/IVlogo"
+                        android:layout_weight="2"
+                        android:src="@drawable/add"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/blue"
+                        />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_below="@id/IVlogo"
+                        android:id="@+id/Space"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Name"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/IVlogo"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Name"
+                            android:inputType="textEmailAddress"
+                            android:id="@+id/ET_Name"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/TVcategory"
+                        android:layout_below="@+id/TIL_Name"
+                        android:text="category"/>
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/SpCategory"
+                        android:layout_weight=".45"
+                        android:layout_below="@+id/TVcategory"
+                        ></Spinner>
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_below="@id/SpCategory"
+                        android:id="@+id/Space1"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Address"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/Space1"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Address"
+                            android:inputType="textPostalAddress"
+                            android:id="@+id/ET_Address"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Description"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/TIL_Address"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Description"
+                            android:inputType="textPostalAddress"
+                            android:id="@+id/ET_Description"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/Rel2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".2"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Name"
+                            android:inputType="textEmailAddress"
+                            android:id="@+id/ET_Tags"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Website"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:layout_below="@+id/TIL_Tags">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Website"
+                            android:inputType="textEmailAddress"
+                            android:id="@+id/ET_Website"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:layout_below="@id/TIL_Website"
+                        android:orientation="vertical">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Phone1"
+                            android:inputType="phone"
+                            android:id="@+id/ET_Phone1"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TIL_Phone2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:layout_below="@id/TIL_Phone"
+                        android:orientation="vertical">
+                        <EditText
+                            android:saveEnabled="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place Phone1"
+                            android:inputType="phone"
+                            android:id="@+id/ET_Phone2"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/Rel3">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="photos of this place"
+                        android:id="@+id/TVphotos"/>
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8sp" />
+                    <ImageView
+                        android:onClick="selectImage"
+                        android:layout_width="match_parent"
+                        android:src="@drawable/add"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:id="@+id/IVimage"
+                        android:layout_below="@+id/TVphotos"
+                        />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8sp" />
+                    <ImageView
+                        android:onClick="selectImage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/IVimage2"
+                        android:layout_weight="1"
+                        android:src="@drawable/add"
+                        android:layout_below="@+id/IVimage"
+                        />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8sp" />
+                    <ImageView
+                        android:id="@+id/IVimage0"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        ></ImageView>
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8sp" />
+                    <ImageView
+                        android:onClick="selectImage3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/IVimage3"
+                        android:layout_weight="1"
+                        android:src="@drawable/add"
+                        android:layout_below="@+id/IVimage2"
+                        />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".8"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+
+        </ViewFlipper>
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout03"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".12">
+
+        <Button
+            android:id="@+id/BTprevious"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous" >
+        </Button>
+
+        <Button
+            android:id="@+id/BTnext"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next" >
+        </Button>
+
+
+
+
+    </RelativeLayout>
+</LinearLayout>

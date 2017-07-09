@@ -51,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
         Button Sign_up=(Button)findViewById(R.id.BT_Sign_up);
 
         firebasedatabase=FirebaseDatabase.getInstance();
-        mDatabase = firebasedatabase.getReferenceFromUrl("https://without-name.firebaseio.com/Users/");
+        mDatabase = firebasedatabase.getReferenceFromUrl("https://round-around-6db6f.firebaseio.com/Users/");
 
         Sign_up.setOnClickListener(new View.OnClickListener() {
             @Override

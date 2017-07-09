@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -58,6 +59,8 @@ import java.util.List;
 public class EditActivity extends AppCompatActivity {
     private Button mNext, mPrevious;
     private ViewFlipper mFlipper;
+    private ViewFlipper flipper;
+    private float initialX;
     int imageNum=0;
     List myList = new ArrayList();
     int PageNum=1;
@@ -107,47 +110,7 @@ public class EditActivity extends AppCompatActivity {
         RetriveData();
 
 
-        mNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(PageNum==2)
-                {
-                    mFlipper.showNext();
-                    PageNum++;
-                    mNext.setText("Finish");
-                }
-                else if(PageNum==3)
-                {
-                    //Method Submit
 
-                    onClickSave();
-                }
-                else if(PageNum==1)
-                {
-                    PageNum++;
-                    mFlipper.showNext();
-                    mPrevious.setEnabled(true);
-                }
-            }
-        });
-        mPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(PageNum==1){
-
-                }else if(PageNum==2)
-                {
-                    mPrevious.setEnabled(false);
-                    PageNum--;
-                    mFlipper.showPrevious();
-                }
-                else if(PageNum==3) {
-                    mNext.setText("Next");
-                    PageNum--;
-                    mFlipper.showPrevious();
-                }
-            }
-        });
     }
     private void Init()
     {
@@ -156,12 +119,15 @@ public class EditActivity extends AppCompatActivity {
 
 
 
+        flipper=(ViewFlipper)findViewById(R.id.Flipper);
+        flipper.setInAnimation(this, android.R.anim.fade_in);
+        flipper.setOutAnimation(this, android.R.anim.fade_out);
+
         mNext= (Button)findViewById(R.id.BTnext);
-        mPrevious= (Button)findViewById(R.id.BTprevious);
-        mFlipper=(ViewFlipper)findViewById(R.id.Flipper);
-        mPrevious.setEnabled(false);
-        mFlipper.setInAnimation(this, R.anim.fab_slide_in_from_left);
-        mFlipper.setOutAnimation(this, R.anim.fab_slide_in_from_left);
+
+
+//        mPrevious.setEnabled(false);
+
 
 
         mName=(EditText) findViewById(R.id.ET_Name);
@@ -181,15 +147,80 @@ public class EditActivity extends AppCompatActivity {
 
         mCategory=(Spinner) findViewById(R.id.SpCategory);
 
-        mFlipper=(ViewFlipper)findViewById(R.id.Flipper);
+
 
         firebasedatabase=FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        mDatabase = firebasedatabase.getInstance().getReferenceFromUrl("https://without-name.firebaseio.com/");
-        mDatabaseCategory=firebasedatabase.getReferenceFromUrl("https://without-name.firebaseio.com/");
+        mDatabase = firebasedatabase.getInstance().getReferenceFromUrl("https://round-around-6db6f.firebaseio.com/");
+        mDatabaseCategory=firebasedatabase.getReferenceFromUrl("https://round-around-6db6f.firebaseio.com/");
         fillSpinnerCategory();
 
 
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent touchevent) {
+        switch (touchevent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                initialX = touchevent.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                float finalX = touchevent.getX();
+                if (initialX > finalX) {
+                    if (flipper.getDisplayedChild() == flipper.getChildCount())
+                        break;
+
+                    flipper.setInAnimation(this, R.anim.in_right);
+                    flipper.setOutAnimation(this, R.anim.out_lift);
+
+                    if(PageNum==2)
+                    {
+                        flipper.showNext();
+                        PageNum++;
+
+
+                    }
+                    else if(PageNum==3)
+                    {
+
+                        //Method Submit
+
+                       onClickSave();
+                    }
+                    else if(PageNum==1)
+                    {
+                        PageNum++;
+
+                        flipper.showNext();
+//                        mPrevious.setEnabled(true);
+                    }
+
+                } else {
+                    if (flipper.getDisplayedChild() == 0)
+                        break;
+
+                    flipper.setInAnimation(this, R.anim.in_left);
+                    flipper.setOutAnimation(this, R.anim.out_right);
+
+                    if(PageNum==1){
+
+
+                    }else if(PageNum==2)
+                    {
+
+  //                      mPrevious.setEnabled(false);
+                        PageNum--;
+                        flipper.showPrevious();
+                    }
+                    else if(PageNum==3) {
+
+                        PageNum--;
+                        flipper.showPrevious();
+                    }
+
+                }
+                break;
+        }
+        return false;
     }
     void fillSpinnerCategory(){
 
@@ -316,7 +347,7 @@ public class EditActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                boolean result=Utility.checkPermission(EditActivity.this);
+                boolean result= Utility.checkPermission(EditActivity.this);
 
                 if (items[item].equals("Take Photo")) {
                     userChoosenTask ="Take Photo";
@@ -550,12 +581,20 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
+    String URL1,URL2,URL3,URLLOGO;
     void RetriveData()
     {
         mDatabase.child("Places").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
+                    URL1=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-1").child("url").getValue(String.class);
+                    URL2=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-2").child("url").getValue(String.class);
+
+                    URL3=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-3").child("url").getValue(String.class);
+                    URLLOGO=dataSnapshot.child(PublicParamaters.PlaceRootId).child("Logo").child("URL").child("url").getValue(String.class);
+
+
                     mName.setText(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Name").getValue(String.class));
                     mAddress.setText(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Location").getValue(String.class));
                     mDescription.setText(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Description").getValue(String.class));
@@ -645,6 +684,24 @@ public class EditActivity extends AppCompatActivity {
 
 
                 if (ImageUri1 != null) {
+
+                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
+
+
+                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.d(TAG, "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.d(TAG, "onFailure: did not delete file");
+                        }
+                    });
+
                     Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri1));
 
                     Ref.putFile(ImageUri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -684,6 +741,22 @@ public class EditActivity extends AppCompatActivity {
                     });
                 }
                 if (ImageUri2 != null) {
+                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL2);
+
+
+                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.d(TAG, "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.d(TAG, "onFailure: did not delete file");
+                        }
+                    });
                     Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri2));
 
                     Ref.putFile(ImageUri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -725,6 +798,22 @@ public class EditActivity extends AppCompatActivity {
                     });
                 }
                 if (ImageUri3 != null) {
+                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+
+
+                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.d(TAG, "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.d(TAG, "onFailure: did not delete file");
+                        }
+                    });
                     Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri3));
 
                     Ref.putFile(ImageUri3).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -738,6 +827,9 @@ public class EditActivity extends AppCompatActivity {
 
 
                             ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+
+
 
                             id.child("images").child("URL-3").setValue(imageUpload);
 
@@ -766,11 +858,25 @@ public class EditActivity extends AppCompatActivity {
                     });
                 }
 
-            } else {
-                Toast.makeText(getApplicationContext(), "please select image", Toast.LENGTH_SHORT).show();
             }
 
             if (LogoUri != null) {
+                StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URLLOGO);
+
+
+                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Log.d(TAG, "onSuccess: deleted file");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Log.d(TAG, "onFailure: did not delete file");
+                    }
+                });
                 Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(LogoUri));
 
                 Ref.putFile(LogoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -812,7 +918,7 @@ public class EditActivity extends AppCompatActivity {
 
 
         }catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("Error",e.getMessage());
         }
 
     }
