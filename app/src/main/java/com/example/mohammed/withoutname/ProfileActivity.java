@@ -85,11 +85,12 @@ public class ProfileActivity extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot issue : dataSnapshot.getChildren()) {
                             arrayList.add(new PublicPlaces(
-                                            issue.child("Place Logo").getValue() + ""
+                                            issue.child("Place Logo").child("url").getValue() .toString()
                                             , issue.child("Place Name").getValue() + ""
                                             , issue.getKey() + ""
                                     )
                             );
+                            Toast.makeText(context, issue.child("Place Logo").child("url").getValue() .toString(), Toast.LENGTH_LONG).show();
                         }
                     } else {
                         Toast.makeText(ProfileActivity.this, "Mis", Toast.LENGTH_SHORT).show();

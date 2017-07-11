@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -50,8 +52,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class AddPlaceActivity extends AppCompatActivity {
+    private TrackGPS gps;
+    double longitude;
+    double latitude;
     private Button mNext, mPrevious;
     private ViewFlipper mFlipper;
     private ViewFlipper flipper;
@@ -97,7 +103,7 @@ public class AddPlaceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_add_place);
 
         Init();
 
@@ -169,12 +175,21 @@ public class AddPlaceActivity extends AppCompatActivity {
 
                         //Method Submit
 
-                         onClickSave();
+                        PageNum++;
+                        flipper.showNext();
+
                     } else if (PageNum == 1) {
                         PageNum++;
 
                         flipper.showNext();
 //                        mPrevious.setEnabled(true);
+                    }
+                    else if (PageNum == 4) {
+
+                        //Method Submit
+
+
+
                     }
 
                 } else {
@@ -193,6 +208,11 @@ public class AddPlaceActivity extends AppCompatActivity {
                         PageNum--;
                         flipper.showPrevious();
                     } else if (PageNum == 3) {
+
+                        PageNum--;
+                        flipper.showPrevious();
+                    }
+                    else if (PageNum == 4) {
 
                         PageNum--;
                         flipper.showPrevious();
@@ -573,222 +593,270 @@ public class AddPlaceActivity extends AppCompatActivity {
 
 
 
-    public void onClickSave() {
+    public void onClickSave(View v) {
 
         try {
 
 
-            if (ImageUri1 != null || ImageUri3 != null || ImageUri2 != null) {
-                if (LogoUri != null) {
+            MyLocation();
 
-                final DatabaseReference id = mDatabase.child("places");
+            if (latitude != 0 && longitude != 0) {
 
-                id.child("Name").setValue(mName.getText().toString());
-                id.child("Category").setValue(mCategory.getSelectedItem().toString());
-                id.child("Address").setValue(mAddress.getText().toString());
-                id.child("Description").setValue(mDescription.getText().toString());
-                String[] a = mTags.getText().toString().split(" ");
-                for (String x : a) {
-                    myList.add(x);
+                if (ImageUri1 != null || ImageUri3 != null || ImageUri2 != null) {
+                    if (LogoUri != null) {
+
+                        final DatabaseReference id = mDatabase.child("Places").push();
+
+                        id.child("Place Name").setValue(mName.getText().toString());
+                        id.child("Place Category").setValue(mCategory.getSelectedItem().toString());
+                        id.child("Place Location").setValue(mAddress.getText().toString());
+                        id.child("Place Description").setValue(mDescription.getText().toString());
+                        String[] a = mTags.getText().toString().split(" ");
+                        for (String x : a) {
+                            myList.add(x);
+                        }
+                        id.child("Place Tags").setValue(myList);
+                        myList.clear();
+                        id.child("Place Website").setValue(mETweb.getText() + "");
+                        myList.add(mETphone.getText() + "");
+                        myList.add(mETphone2.getText() + "");
+                        id.child("Place Phone").setValue(myList);
+                        myList.clear();
+                        id.child("Place Own").setValue(PublicParamaters.UserRootId);
+                        id.child("Place City").setValue(getCompleteAddressString(latitude,longitude));
+                        id.child("Place Lat").setValue(latitude);
+                        id.child("Place Lng").setValue(longitude);
+                        // Location.clear();
+
+
+                        StorageReference Ref = null;
+                        final ProgressDialog dialog = new ProgressDialog(this);
+                        dialog.setTitle("uploading image");
+
+
+                        if (ImageUri1 != null) {
+
+
+                            Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri1));
+
+                            Ref.putFile(ImageUri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @SuppressWarnings("VisibleForTests")
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    dialog.dismiss();
+
+                                    Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                                    id.child("images").child("URL-1").setValue(imageUpload);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    dialog.dismiss();
+
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+
+
+                                @SuppressWarnings("VisibleForTests")
+                                @Override
+                                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                                    dialog.setMessage("uploading " + (int) progress + "s");
+                                }
+                            });
+                        }
+                        if (ImageUri2 != null) {
+
+                            Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri2));
+
+                            Ref.putFile(ImageUri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @SuppressWarnings("VisibleForTests")
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    dialog.dismiss();
+
+                                    Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                                    id.child("images").child("URL-2").setValue(imageUpload);
+                                    //String uploadID=mDatabaseRef.push().getKey();
+                                    // mDatabase.child(uploadID).child("images").push().setValue(imageUpload);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    dialog.dismiss();
+
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+
+
+                                @SuppressWarnings("VisibleForTests")
+                                @Override
+                                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                                    dialog.setMessage("uploading " + (int) progress + "s");
+                                }
+                            });
+                        }
+                        if (ImageUri3 != null) {
+
+
+                            Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri3));
+
+                            Ref.putFile(ImageUri3).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @SuppressWarnings("VisibleForTests")
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    dialog.dismiss();
+
+                                    Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+
+                                    id.child("images").child("URL-3").setValue(imageUpload);
+
+                                    //mDatabase.child(uploadID).child("images").push().setValue(imageUpload);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    dialog.dismiss();
+
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+
+
+                                @SuppressWarnings("VisibleForTests")
+                                @Override
+                                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                                    dialog.setMessage("uploading " + (int) progress + "s");
+                                }
+                            });
+                        }
+
+
+                        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(LogoUri));
+
+                        Ref.putFile(LogoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @SuppressWarnings("VisibleForTests")
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                dialog.dismiss();
+
+                                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                                id.child("Place Logo").setValue(imageUpload);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                                dialog.dismiss();
+
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+
+
+                            @SuppressWarnings("VisibleForTests")
+                            @Override
+                            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                                dialog.setMessage("uploading " + (int) progress + "s");
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this, "Please Select Logo", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Please Select at least one image", Toast.LENGTH_SHORT).show();
                 }
-                id.child("Tags").setValue(myList);
-                myList.clear();
-                id.child("Place Website").setValue(mETweb.getText() + "");
-                myList.add(mETphone.getText() + "");
-                myList.add(mETphone2.getText() + "");
-                id.child("Phone").setValue(myList);
-                myList.clear();
-
-
-                // Location.clear();
-
-
-                StorageReference Ref = null;
-                final ProgressDialog dialog = new ProgressDialog(this);
-                dialog.setTitle("uploading image");
-
-
-                if (ImageUri1 != null) {
-
-
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri1));
-
-                    Ref.putFile(ImageUri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                            id.child("images").child("URL-1").setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
-                }
-                if (ImageUri2 != null) {
-
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri2));
-
-                    Ref.putFile(ImageUri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                            id.child("images").child("URL-2").setValue(imageUpload);
-                            //String uploadID=mDatabaseRef.push().getKey();
-                            // mDatabase.child(uploadID).child("images").push().setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
-                }
-                if (ImageUri3 != null) {
-
-
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri3));
-
-                    Ref.putFile(ImageUri3).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-
-                            id.child("images").child("URL-3").setValue(imageUpload);
-
-                            //mDatabase.child(uploadID).child("images").push().setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
-                }
-
-
-
-
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(LogoUri));
-
-                    Ref.putFile(LogoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                            id.child("Logo").child("URL").setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
-                }
-
-
-                else {
-                    Toast.makeText(this, "Please Select Logo", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "Please Select at least one image", Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
+            else {
+                Toast.makeText(gps, "Open Gps", Toast.LENGTH_SHORT).show();
+            }
+            }
+            catch(Exception e){
+                Log.e("Error", e.getMessage());
+            }
+
+    }
+    public void MyLocation()
+    {
+
+        gps = new TrackGPS(AddPlaceActivity.this);
+        if(gps.canGetLocation()){
+            longitude = gps.getLongitude();
+            latitude = gps .getLatitude();
+        }
+        else
+        {
+
+            gps.showSettingsAlert();
         }
 
 
+
+
     }
+    public String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i < 1; i++) {
+                    strReturnedAddress
+                            .append(returnedAddress.getAddressLine(2));
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w("My Current loction address", "" + strReturnedAddress.toString());
+            } else {
+                Log.w("My Current loction address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("My Current loction address", "Canont get Address!");
+        }
+        return strAdd;
+    }
+
 }

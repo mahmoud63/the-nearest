@@ -32,7 +32,7 @@
 
         <android android:name=".HomeActivity" />
 
-        <activity android:name=".AddPlaceActivity" />
+        <activity android:theme="@style/NoTitleBar" android:name=".AddPlaceActivity" />
         <activity
             android:name=".SaveMyLocationActivity"
             android:theme="@style/NoTitleBar" />

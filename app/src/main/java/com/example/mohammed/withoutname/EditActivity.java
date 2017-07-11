@@ -166,32 +166,31 @@ public class EditActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 float finalX = touchevent.getX();
                 if (initialX > finalX) {
-                    if (flipper.getDisplayedChild() == flipper.getChildCount())
-                        break;
 
-                    flipper.setInAnimation(this, R.anim.in_right);
-                    flipper.setOutAnimation(this, R.anim.out_lift);
-
-                    if(PageNum==2)
-                    {
+                    if (PageNum == 2) {
                         flipper.showNext();
                         PageNum++;
 
 
-                    }
-                    else if(PageNum==3)
-                    {
+                    } else if (PageNum == 3) {
 
                         //Method Submit
 
-                       onClickSave();
-                    }
-                    else if(PageNum==1)
-                    {
+                        PageNum++;
+                        flipper.showNext();
+
+                    } else if (PageNum == 1) {
                         PageNum++;
 
                         flipper.showNext();
 //                        mPrevious.setEnabled(true);
+                    }
+                    else if (PageNum == 4) {
+
+                        //Method Submit
+
+
+
                     }
 
                 } else {
@@ -201,17 +200,20 @@ public class EditActivity extends AppCompatActivity {
                     flipper.setInAnimation(this, R.anim.in_left);
                     flipper.setOutAnimation(this, R.anim.out_right);
 
-                    if(PageNum==1){
+                    if (PageNum == 1) {
 
 
-                    }else if(PageNum==2)
-                    {
+                    } else if (PageNum == 2) {
 
-  //                      mPrevious.setEnabled(false);
+                        //                      mPrevious.setEnabled(false);
+                        PageNum--;
+                        flipper.showPrevious();
+                    } else if (PageNum == 3) {
+
                         PageNum--;
                         flipper.showPrevious();
                     }
-                    else if(PageNum==3) {
+                    else if (PageNum == 4) {
 
                         PageNum--;
                         flipper.showPrevious();
@@ -590,9 +592,8 @@ public class EditActivity extends AppCompatActivity {
                 try {
                     URL1=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-1").child("url").getValue(String.class);
                     URL2=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-2").child("url").getValue(String.class);
-
                     URL3=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-3").child("url").getValue(String.class);
-                    URLLOGO=dataSnapshot.child(PublicParamaters.PlaceRootId).child("Logo").child("URL").child("url").getValue(String.class);
+                    URLLOGO=dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Logo").child("URL").child("url").getValue(String.class);
 
 
                     mName.setText(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Name").getValue(String.class));
@@ -612,17 +613,17 @@ public class EditActivity extends AppCompatActivity {
                     mTags.setText(y);
                     mCategory.setSelection(areasAdapter.getPosition(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Category").getValue(String.class)));
                     Picasso.with(EditActivity.this)
-                            .load(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Logo").getValue(String.class) + "").placeholder(R.mipmap.ic_launcher_round)
+                            .load(URLLOGO).placeholder(R.mipmap.ic_launcher_round)
                             .into(mLogo);
-                    ArrayList<String> list3 = dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Images").getValue(t);
+                    ArrayList<String> list3 = dataSnapshot.child(PublicParamaters.PlaceRootId).child("Images").getValue(t);
                     Picasso.with(EditActivity.this)
-                            .load("" + list3.get(0)).placeholder(R.mipmap.ic_launcher_round)
+                            .load(URL1).placeholder(R.mipmap.ic_launcher_round)
                             .into(mPhoto1);
                     Picasso.with(EditActivity.this)
-                            .load("" + list3.get(1)).placeholder(R.mipmap.ic_launcher_round)
+                            .load(URL2).placeholder(R.mipmap.ic_launcher_round)
                             .into(mPhoto2);
                     Picasso.with(EditActivity.this)
-                            .load("" + list3.get(2)).placeholder(R.mipmap.ic_launcher_round)
+                            .load(URL3).placeholder(R.mipmap.ic_launcher_round)
                             .into(mPhoto3);
                 }catch (Exception ex)
                 {
@@ -639,26 +640,26 @@ public class EditActivity extends AppCompatActivity {
         });
     }
 
-    public void onClickSave() {
+    public void onClickSave(View view) {
 
 
-        final DatabaseReference id = mDatabase.child("places").child(PublicParamaters.PlaceRootId);
+        final DatabaseReference id = mDatabase.child("Places").child(PublicParamaters.PlaceRootId);
 
-        id.child("Name").setValue(mName.getText().toString());
-        id.child("Category").setValue(mCategory.getSelectedItem().toString());
-        id.child("Address").setValue(mAddress.getText().toString());
-        id.child("Description").setValue(mDescription.getText().toString());
-        String []a=mTags.getText().toString().split(" ");
+        id.child("Place Phone").setValue(mName.getText().toString());
+        id.child("Place Category").setValue(mCategory.getSelectedItem().toString());
+        id.child("Place Location").setValue(mAddress.getText().toString());
+        id.child("Place Description").setValue(mDescription.getText().toString());
+        String[]a=mTags.getText().toString().split(" ");
         for (String x:a)
         {
             myList.add(x);
         }
-        id.child("Tags").setValue(myList);
+        id.child("Place Tags").setValue(myList);
         myList.clear();
         id.child("Place Website").setValue(mETweb.getText()+"");
         myList.add(mETphone.getText()+"");
         myList.add(mETphone2.getText()+"");
-        id.child("Phone").setValue(myList);
+        id.child("Place Phone").setValue(myList);
         myList.clear();
 
 
@@ -891,7 +892,7 @@ public class EditActivity extends AppCompatActivity {
 
                         ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
 
-                        id.child("Logo").child("URL").setValue(imageUpload);
+                        id.child("Place Logo").child("URL").setValue(imageUpload);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

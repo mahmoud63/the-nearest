@@ -10,25 +10,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <EditText
-        android:id="@+id/ET_Title"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:textAlignment="center"
-        android:hint="Title"/>
-    <EditText
-        android:id="@+id/ET_Description"
+        android:id="@+id/TIL_Title">
+        <EditText
+            android:id="@+id/ET_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"/>
+    </android.support.design.widget.TextInputLayout>
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:textAlignment="center"
-        android:hint="Description"/>
+        android:layout_height="8sp" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/TIL_Description">
+        <EditText
+            android:id="@+id/ET_Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:hint="Description"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15sp" />
 
     <Button
+        android:layout_margin="5sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/BT_Save"
         />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"/>
 
 </LinearLayout>
 </RelativeLayout>
