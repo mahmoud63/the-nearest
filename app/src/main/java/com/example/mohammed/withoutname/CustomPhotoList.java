@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,7 @@ public class CustomPhotoList extends BaseAdapter {
 
         // PublicPlaces publicPlaces=placesList.get(position);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(ImagesList.get(position)).placeholder(R.mipmap.ic_launcher_round)
                 .into(holder.image);
 

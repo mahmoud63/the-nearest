@@ -183,7 +183,8 @@ public class ShowDetailsActivity extends AppCompatActivity
 
         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         ezzat(latLng);
-        LatLng latLng2=new LatLng(31.033871, 31.3807197);
+        LatLng latLng2=new LatLng(PublicParamaters.PlaceList.get(0).Lat
+                ,PublicParamaters.PlaceList.get(0).Lang);
         ezzat(latLng2);
 
 

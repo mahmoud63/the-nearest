@@ -32,7 +32,7 @@ public class PublicPlaces {
         this.RootId=rootId;
     }
     public PublicPlaces(String logo,String name,String location,double lang,double lat,float distance,String tag
-    ,String description,String image,String phone,String websiteUrl,String workHour)
+    ,String description,String image,String phone,String websiteUrl,String category)
     {
         this.Logo=logo;
         this.Name=name;
@@ -45,7 +45,7 @@ public class PublicPlaces {
         this.Image=image;
         this.Phone=phone;
         this.WebsiteUrl=websiteUrl;
-        this.WorkHour=workHour;
+        this.Category=category;
     }
 
     //Search Cons

@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -62,8 +62,8 @@ public class CustomAdapter extends BaseAdapter {
         holder.place_name=(TextView) row.findViewById(R.id.Name_Text);
 
         try {
-            Picasso.with(context)
-                    .load(placesList.get(position).Logo).placeholder(R.mipmap.ic_launcher_round).resize(80, 80)
+            Glide.with(context)
+                    .load(placesList.get(position).Logo)
                     .into(holder.logo_pic);
         }
         catch (Exception ex) {

@@ -45,7 +45,7 @@ public class Database {
                     + TableName
                     + " (Title, Description, longitude, latitude)"
                     + " VALUES ('" + Title + "', '" + Description + "','" + longitude + "','" + latitude + "');");
-            Toast.makeText(context, "Seccesful Insert", Toast.LENGTH_SHORT).show();
+            Log.d("Insert Success","Insert Success");
         } catch (Exception ex) {
 
             Toast.makeText(context, "Fail Insert"+"\n"+ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -70,7 +70,6 @@ public class Database {
                     arrayList.add(new MyPlacesDetails(id,title,description,longitude,latitude));
                 } while (cursor.moveToNext());
             }
-            Toast.makeText(context, "Retrive Sucssufl", Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
             Toast.makeText(context,ex.getMessage() , Toast.LENGTH_LONG).show();
         }

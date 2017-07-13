@@ -33,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +46,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -244,29 +244,25 @@ public class EditActivity extends AppCompatActivity {
     public void selectImage(View v) {
         imageNum=1;
         selectImage();
-        b=1;
+
 
     }
     int n=0;
     public void selectImage2(View v) {
 
 
-        if (b==0){
-            Toast.makeText(this, "fill first image first", Toast.LENGTH_SHORT).show();
-        }else{
+
             imageNum=2;
             selectImage();
-            n=1;
-        }
+
+
     }
     public void selectImage3(View v) {
 
-        if (n==0){
-            Toast.makeText(this, "fill above images first ", Toast.LENGTH_SHORT).show();
-        }else{
+
 
             imageNum=3;
-            selectImage();}
+            selectImage();
     }
     public void selectLogo(View v){
 
@@ -353,47 +349,21 @@ public class EditActivity extends AppCompatActivity {
 
                 if (items[item].equals("Take Photo")) {
                     userChoosenTask ="Take Photo";
-                    if(result)
-                        cameraIntent();
+                    if(result){
+                        DeletePhoto();
+                        cameraIntent();}
 
                 } else if (items[item].equals("Choose from Library")) {
                     userChoosenTask ="Choose from Library";
-                    if(result)
-                        galleryIntent();
+                    if(result){
+                        DeletePhoto();
+                        galleryIntent();}
 
 
                 }
                 else if (items[item].equals("Delete")) {
 
-                    switch (imageNum) {
-                        case 1:
-                            mPhoto1.setImageBitmap(null);
-                            ImageUri1=null;
-                            b=0;
-                            break;
-                        case 2:
-
-                            mPhoto2.setImageBitmap(null);
-                            ImageUri2=null;
-                            n=0;
-                            break;
-
-
-                        case 3:
-
-                            mPhoto3.setImageBitmap(null);
-                            ImageUri3=null;
-                            // Do something here related to button 2
-                            break;
-
-                        case 4:
-                            mLogo.setImageBitmap(null);
-                            LogoUri=null;
-                    }
-
-
-
-
+                   DeletePhoto();
                 }
 
                 else if (items[item].equals("Cancel")) {
@@ -404,6 +374,100 @@ public class EditActivity extends AppCompatActivity {
         builder.show();
     }
 
+    void DeletePhoto(){
+        switch (imageNum) {
+        case 1:
+
+            StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
+
+
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d(TAG, "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d(TAG, "onFailure: did not delete file");
+                }
+            });
+
+            mPhoto1.setImageBitmap(null);
+            ImageUri1=null;
+            b=0;
+            break;
+        case 2:
+            photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL2);
+
+
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d(TAG, "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d(TAG, "onFailure: did not delete file");
+                }
+            });
+
+            mPhoto2.setImageBitmap(null);
+            ImageUri2=null;
+            n=0;
+            break;
+
+
+        case 3:
+
+            mPhoto3.setImageBitmap(null);
+            ImageUri3=null;
+            photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+
+
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d(TAG, "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d(TAG, "onFailure: did not delete file");
+                }
+            });
+            // Do something here related to button 2
+            break;
+
+        case 4:
+            mLogo.setImageBitmap(null);
+            LogoUri=null;
+            photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+
+
+            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // File deleted successfully
+                    Log.d(TAG, "onSuccess: deleted file");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                    Log.d(TAG, "onFailure: did not delete file");
+                }
+            });
+            // Do something here related to button 2
+            break;
+    }}
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -454,11 +518,14 @@ public class EditActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
-                ImageUri = data.getData();}
+                ImageUri = data.getData();
+            Log.i("studio","done");
+            }
             else if (requestCode == REQUEST_CAMERA){
 
                 onCaptureImageResult(data);
 
+                Log.i("studio","done");
 
                 // ImageUri = data.getData();
             }
@@ -491,7 +558,9 @@ public class EditActivity extends AppCompatActivity {
                 fo.write(bytes.toByteArray());
 //        data.setData(ImageUri);
                 ImageUri = data.getData();
+
                 ImageUri=getImageUri(this,thumbnail);
+                Log.i("studio","done");
                 switch (imageNum){
                     case 1:
                         ImageUri1=ImageUri;
@@ -540,6 +609,7 @@ public class EditActivity extends AppCompatActivity {
         }
 
         try{mPhoto.setImageBitmap(bm);
+            Log.i("studio","done");
             switch (imageNum){
                 case 1:
                     ImageUri1=ImageUri;
@@ -590,10 +660,11 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
+
                     URL1=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-1").child("url").getValue(String.class);
                     URL2=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-2").child("url").getValue(String.class);
                     URL3=dataSnapshot.child(PublicParamaters.PlaceRootId).child("images").child("URL-3").child("url").getValue(String.class);
-                    URLLOGO=dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Logo").child("URL").child("url").getValue(String.class);
+                    URLLOGO=dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Logo").child("url").getValue(String.class);
 
 
                     mName.setText(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Name").getValue(String.class));
@@ -612,18 +683,27 @@ public class EditActivity extends AppCompatActivity {
                     }
                     mTags.setText(y);
                     mCategory.setSelection(areasAdapter.getPosition(dataSnapshot.child(PublicParamaters.PlaceRootId).child("Place Category").getValue(String.class)));
-                    Picasso.with(EditActivity.this)
-                            .load(URLLOGO).placeholder(R.mipmap.ic_launcher_round)
+
+
+
+                    Glide.with(EditActivity.this)
+                            .load(URLLOGO)
                             .into(mLogo);
-                    ArrayList<String> list3 = dataSnapshot.child(PublicParamaters.PlaceRootId).child("Images").getValue(t);
-                    Picasso.with(EditActivity.this)
-                            .load(URL1).placeholder(R.mipmap.ic_launcher_round)
+
+
+                    Glide.with(EditActivity.this)
+                            .load(URL1)
                             .into(mPhoto1);
-                    Picasso.with(EditActivity.this)
-                            .load(URL2).placeholder(R.mipmap.ic_launcher_round)
+
+
+
+                    Glide.with(EditActivity.this)
+                            .load(URL2)
                             .into(mPhoto2);
-                    Picasso.with(EditActivity.this)
-                            .load(URL3).placeholder(R.mipmap.ic_launcher_round)
+
+
+                    Glide.with(EditActivity.this)
+                            .load(URL3)
                             .into(mPhoto3);
                 }catch (Exception ex)
                 {
@@ -645,7 +725,7 @@ public class EditActivity extends AppCompatActivity {
 
         final DatabaseReference id = mDatabase.child("Places").child(PublicParamaters.PlaceRootId);
 
-        id.child("Place Phone").setValue(mName.getText().toString());
+        id.child("Place Name").setValue(mName.getText().toString());
         id.child("Place Category").setValue(mCategory.getSelectedItem().toString());
         id.child("Place Location").setValue(mAddress.getText().toString());
         id.child("Place Description").setValue(mDescription.getText().toString());
@@ -685,6 +765,7 @@ public class EditActivity extends AppCompatActivity {
 
 
                 if (ImageUri1 != null) {
+                    Toast.makeText(this, "212121", Toast.LENGTH_SHORT).show();
 
                     StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
 

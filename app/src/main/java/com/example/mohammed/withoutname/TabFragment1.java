@@ -29,10 +29,12 @@ public class TabFragment1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View vieW=inflater.inflate(R.layout.activity_tab_fragment1, container, false);
 
+        String [] arr=PublicParamaters.PlaceList.get(0).Image.split(",");
+
         ArrayList<String> arrayList=new ArrayList <>();
-        arrayList.add("http://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg");
-        arrayList.add("lkl");
-        arrayList.add("http://www.planwallpaper.com/static/images/Child-Girl-with-Sunflowers-Images.jpg");
+        arrayList.add(arr[0]);
+        arrayList.add(arr[1]);
+        arrayList.add(arr[2]);
 
 
 
@@ -41,8 +43,7 @@ public class TabFragment1 extends Fragment {
 
         listView.setAdapter(new CustomPhotoList(context,arrayList));
 
-
-
+        
         return vieW;
     }
 

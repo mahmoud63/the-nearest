@@ -58,7 +58,7 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/nav"
         app:elevation="1dp"
         app:pressedTranslationZ="1dp"
         app:layout_anchor="@id/collapsing_toolbar"

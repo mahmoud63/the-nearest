@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,12 +84,11 @@ public class ProfileActivity extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot issue : dataSnapshot.getChildren()) {
                             arrayList.add(new PublicPlaces(
-                                            issue.child("Place Logo").child("url").getValue() .toString()
+                                            issue.child("Place Logo").child("url").getValue().toString()
                                             , issue.child("Place Name").getValue() + ""
                                             , issue.getKey() + ""
                                     )
                             );
-                            Toast.makeText(context, issue.child("Place Logo").child("url").getValue() .toString(), Toast.LENGTH_LONG).show();
                         }
                     } else {
                         Toast.makeText(ProfileActivity.this, "Mis", Toast.LENGTH_SHORT).show();
@@ -194,6 +192,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
     public void RetriveLocal()
     {
+        Database.CreateTableSaves("Saves");
         final SwipeMenuListView listView;
         final ArrayList<MyPlacesDetails>arrayList;
         listView = (SwipeMenuListView) findViewById(R.id.listView);
@@ -208,9 +207,10 @@ public class ProfileActivity extends AppCompatActivity {
         {
             jj.add(values.get(i).title);
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        listView.setAdapter(new PrivateCustomAdapter(ProfileActivity.this,jj));
+       /* final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1,jj);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
 //Swipe null
         listView.setMenuCreator(null);
         listView.setSwipeDirection(AbsListView.CHOICE_MODE_NONE);
@@ -222,12 +222,12 @@ public class ProfileActivity extends AppCompatActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
+                                             int position, long id) {
 
                         final String itemValue = (String) listView.getItemAtPosition(position);
                         int index= jj.indexOf(itemValue);
                         final int Id=arrayList.get(index).id;
-                        String Title=arrayList.get(index).title;
+                        final String Title=arrayList.get(index).title;
                         String Description=arrayList.get(index).description;
                         final String Lat=arrayList.get(index).latitude;
                         final String lon=arrayList.get(index).longitude;
@@ -254,7 +254,6 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 try{
-                                    Toast.makeText(ProfileActivity.this, "1", Toast.LENGTH_SHORT).show();
                                     PublicParamaters.lon=Double.parseDouble(lon);
                                     PublicParamaters.lat=Double.parseDouble(Lat);
                                     Intent m=new Intent(ProfileActivity.this,MapsActivity.class);
@@ -274,9 +273,8 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 try{
-                                    adapter.remove(itemValue);
-                                    adapter.notifyDataSetChanged();
-                                    Toast.makeText(ProfileActivity.this, "Here", Toast.LENGTH_SHORT).show();
+                                    jj.remove(Title);
+                                    listView.setAdapter(new PrivateCustomAdapter(ProfileActivity.this,jj));
                                     Database.DeletePlace(Id,ProfileActivity.this);
                                     deleteDialog.dismiss();
                                 }catch (Exception ex)

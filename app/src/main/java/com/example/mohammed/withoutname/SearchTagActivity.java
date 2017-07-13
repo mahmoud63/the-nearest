@@ -34,6 +34,7 @@ public class SearchTagActivity extends AppCompatActivity {
     double longitude,latitude;
     String City;
     float Distance;
+    ArrayList<String > arrayString=new ArrayList <>();
     ArrayList<PublicPlaces> arrayList=new ArrayList <>();
     ArrayList<PublicPlaces> arrayList2=new ArrayList <>();
     @Override
@@ -71,6 +72,7 @@ public class SearchTagActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                arrayList2.clear();
                 ListView listView=(ListView)findViewById(R.id.TagList);
                 String space=" ";
                 if(query.isEmpty()||query.equals(space))
@@ -166,24 +168,23 @@ public class SearchTagActivity extends AppCompatActivity {
                     try {
                         //Start Activity Without Search , Category Only
                         for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                                Distance = GetDistance(Double.parseDouble(""+issue.child("Place Lat").getValue()) , Double.parseDouble(""+issue.child("Place Lng").getValue()));
-                               /* arrayList.add(new PublicPlaces(Distance, issue.child("Place Logo").getValue().toString(),
-                                        issue.child("Place Name").getValue().toString(), issue.child("Place Description").getValue().toString(),
-                                        issue.child("Place Location").getValue().toString(), issue.child("Place Website").getValue().toString(),
-                                        issue.child("Place WorkHour").getValue().toString(), issue.child("Place Tags").getValue().toString(),
-                                        issue.child("Place Images").getValue().toString(), issue.child("Place Phone").getValue().toString()));*/
-                            arrayList.add(new PublicPlaces(issue.child("Logo").getValue() + ""
+                            String URL1=issue.child("images").child("URL-1").child("url").getValue(String.class);
+                            String URL2=issue.child("images").child("URL-2").child("url").getValue(String.class);
+                            String URL3=issue.child("images").child("URL-3").child("url").getValue(String.class);
+                            Distance = GetDistance(Double.parseDouble(""+issue.child("Place Lat").getValue()) , Double.parseDouble(""+issue.child("Place Lng").getValue()));
+                            arrayList.add(new PublicPlaces(issue.child("Place Logo").child("url").getValue(String.class)
                                     , issue.child("Place Name").getValue() + ""
                                     , issue.child("Place Location").getValue() + ""
                                     , Double.parseDouble("" + issue.child("Place Lng").getValue())
                                     , Double.parseDouble(issue.child("Place Lat").getValue() + ""),Distance
                                     ,issue.child("Place Tags").getValue()+""
                                     ,issue.child("Place Description").getValue()+""
-                                    ,issue.child("Place Images").getValue()+""
+                                    ,URL1+","+URL2+","+URL3
                                     ,issue.child("Place Phone").getValue()+""
                                     ,issue.child("Place Website").getValue()+""
-                                    ,issue.child("Place WorkHour").getValue()+""
+                                    ,issue.child("Place Category").getValue()+""
                             ));
+                            arrayString.add(issue.child("Place Name").getValue() + "");
                         }
                     }
                     catch (Exception Ex)
@@ -195,8 +196,6 @@ public class SearchTagActivity extends AppCompatActivity {
                     Toast.makeText(SearchTagActivity.this, "Mis", Toast.LENGTH_SHORT).show();
                 }
                 try {
-                    Toast.makeText(SearchTagActivity.this, "" + arrayList.size(), Toast.LENGTH_SHORT).show();
-
                     listView.setAdapter(new CustomListAdapter(SearchTagActivity.this,arrayList));
                 }catch (Exception ex)
                 {
@@ -215,15 +214,17 @@ public class SearchTagActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-
-                        final String itemValue = (String) listView.getItemAtPosition(position);
-                        Toast.makeText(SearchTagActivity.this, itemValue, Toast.LENGTH_SHORT).show();
-                        PublicParamaters.lat=23;
-                        PublicParamaters.lon=35;
-                        Intent show=new Intent(context,ShowDetailsActivity.class);
-                        startActivity(show);
-
-
+                        try {
+                            PublicParamaters.PlaceList.clear();
+                            final String itemValue = (String) listView.getItemAtPosition(position);
+                            int index=arrayString.indexOf(itemValue);
+                            PublicPlaces publicPlaces=arrayList.get(index);
+                            PublicParamaters.PlaceList.add(publicPlaces);
+                            Intent show = new Intent(context, ShowDetailsActivity.class);
+                            startActivity(show);
+                        }catch (Exception ex) {
+                            Toast.makeText(SearchTagActivity.this,ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 });
