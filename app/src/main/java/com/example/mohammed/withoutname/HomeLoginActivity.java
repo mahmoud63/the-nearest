@@ -70,9 +70,9 @@ public class HomeLoginActivity extends AppCompatActivity {
 
 
         circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.ic_home, R.drawable.ic_home2);
-        circleMenu.addSubMenu(Color.parseColor("#258CFF"), R.drawable.i1)
-                .addSubMenu(Color.parseColor("#30A400"), R.drawable.home)
-                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.i3);
+        circleMenu.addSubMenu(Color.parseColor("#258CFF"), R.drawable.ic_add)
+                .addSubMenu(Color.parseColor("#30A400"), R.drawable.ic_log)
+                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.ic_save);
 
         circleMenu.setOnMenuStatusChangeListener(new OnMenuStatusChangeListener() {
             @Override
@@ -142,7 +142,7 @@ public class HomeLoginActivity extends AppCompatActivity {
                 R.drawable.atm,
                 R.drawable.hospital,
                 R.drawable.fuel,
-                R.drawable.pharmcy,
+                R.drawable.pharmacy,
                 R.drawable.other};
 
         Album a = new Album("Restaurant", covers[0]);

@@ -232,39 +232,47 @@ public class EditActivity extends AppCompatActivity {
         areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCategory.setAdapter(areasAdapter);
     }
-    int b=0;
+
 
     public void selectImage(View v) {
-        imageNum=1;
+        imageNum = 1;
         selectImage();
 
 
     }
-    int n=0;
+
+
+
     public void selectImage2(View v) {
 
 
 
-        imageNum=2;
+        imageNum = 2;
         selectImage();
 
-
     }
+
     public void selectImage3(View v) {
 
 
 
-        imageNum=3;
-        selectImage();
-    }
-    public void selectLogo(View v){
 
-        imageNum=4;
+
+        imageNum = 3;
+        selectImage();
+
+    }
+
+    public void selectLogo(View v) {
+
+        imageNum = 4;
         selectImage();
     }
+
     private boolean canAskPermission() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+
     private boolean hasPermission(String permission) {
         if (canAskPermission()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -282,14 +290,15 @@ public class EditActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(userChoosenTask.equals("Take Photo"))
+                    if (userChoosenTask.equals("Take Photo"))
                         cameraIntent();
-                    else if(userChoosenTask.equals("Choose from Library"))
+                    else if (userChoosenTask.equals("Choose from Library"))
                         galleryIntent();
                 } else {
                     //code for deny
@@ -330,36 +339,63 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library"
-                ,"Delete","Cancel" };
+        final CharSequence[] items = {"Take Photo", "Choose from Library"
+                , "Delete", "Cancel"};
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                boolean result= Utility.checkPermission(EditActivity.this);
+                boolean result = Utility.checkPermission(EditActivity.this);
 
                 if (items[item].equals("Take Photo")) {
-                    userChoosenTask ="Take Photo";
-                    if(result){
-                        DeletePhoto();
-                        cameraIntent();}
+                    userChoosenTask = "Take Photo";
+                    if (result){
+                        cameraIntent();
+
+                    }
 
                 } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask ="Choose from Library";
-                    if(result){
-                        DeletePhoto();
-                        galleryIntent();}
+                    userChoosenTask = "Choose from Library";
+                    if (result)
+                        galleryIntent();
 
 
-                }
-                else if (items[item].equals("Delete")) {
+                } else if (items[item].equals("Delete")) {
 
-                    DeletePhoto();
-                }
+                    switch (imageNum) {
+                        case 1:
+                            mPhoto1.setImageBitmap(null);
+                            ImageUri1 = null;
 
-                else if (items[item].equals("Cancel")) {
+
+                            break;
+                        case 2:
+
+                            mPhoto2.setImageBitmap(null);
+                            ImageUri2 = null;
+
+                            break;
+
+
+                        case 3:
+
+                            mPhoto3.setImageBitmap(null);
+                            ImageUri3 = null;
+
+                            // Do something here related to button 2
+                            break;
+
+                        case 4:
+                            mLogo.setImageBitmap(null);
+                            LogoUri = null;
+
+                            break;
+                    }
+
+
+                } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -367,105 +403,11 @@ public class EditActivity extends AppCompatActivity {
         builder.show();
     }
 
-    void DeletePhoto(){
-        switch (imageNum) {
-            case 1:
-
-                StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
-
-
-                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
-                        Log.d(TAG, "onSuccess: deleted file");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
-                        Log.d(TAG, "onFailure: did not delete file");
-                    }
-                });
-
-                mPhoto1.setImageBitmap(null);
-                ImageUri1=null;
-                b=0;
-                break;
-            case 2:
-                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL2);
-
-
-                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
-                        Log.d(TAG, "onSuccess: deleted file");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
-                        Log.d(TAG, "onFailure: did not delete file");
-                    }
-                });
-
-                mPhoto2.setImageBitmap(null);
-                ImageUri2=null;
-                n=0;
-                break;
-
-
-            case 3:
-
-                mPhoto3.setImageBitmap(null);
-                ImageUri3=null;
-                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
-
-
-                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
-                        Log.d(TAG, "onSuccess: deleted file");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
-                        Log.d(TAG, "onFailure: did not delete file");
-                    }
-                });
-                // Do something here related to button 2
-                break;
-
-            case 4:
-                mLogo.setImageBitmap(null);
-                LogoUri=null;
-                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
-
-
-                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
-                        Log.d(TAG, "onSuccess: deleted file");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
-                        Log.d(TAG, "onFailure: did not delete file");
-                    }
-                });
-                // Do something here related to button 2
-                break;
-        }}
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -487,19 +429,19 @@ public class EditActivity extends AppCompatActivity {
                     // Show an explanation to the user *asynchronously* -- don't block
                     // this thread waiting for the user's response! After the user
                     // sees the explanation, try again to request the permission.
-                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
+
                     startActivityForResult(intent, REQUEST_CAMERA);
                 } else {
                     Thread.sleep(2000);
                     startActivityForResult(intent, REQUEST_CAMERA);
                 }
-            }else
-            {
+            } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                startActivityForResult(intent, REQUEST_CAMERA);}
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, REQUEST_CAMERA);
+            }
+        } catch (Exception e) {
+            Log.e("Error",e.getMessage());
         }
 
     }
@@ -509,18 +451,16 @@ public class EditActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE){
+            if (requestCode == SELECT_FILE) {
                 onSelectFromGalleryResult(data);
-                ImageUri = data.getData();
-                Log.i("studio","done");
-            }
-            else if (requestCode == REQUEST_CAMERA){
+
+
+            } else if (requestCode == REQUEST_CAMERA) {
 
                 onCaptureImageResult(data);
 
-                Log.i("studio","done");
 
-
+                // ImageUri = data.getData();
             }
 
         }
@@ -549,26 +489,24 @@ public class EditActivity extends AppCompatActivity {
                 destination.createNewFile();
                 fo = new FileOutputStream(destination);
                 fo.write(bytes.toByteArray());
-
+//        data.setData(ImageUri);
                 ImageUri = data.getData();
-
-                ImageUri=getImageUri(this,thumbnail);
-                Log.i("studio","done");
-                switch (imageNum){
+                ImageUri = getImageUri(this, thumbnail);
+                switch (imageNum) {
                     case 1:
-                        ImageUri1=ImageUri;
+                        ImageUri1 = ImageUri;
                         mPhoto1.setImageBitmap(thumbnail);
                         break;
                     case 2:
-                        ImageUri2=ImageUri;
+                        ImageUri2 = ImageUri;
                         mPhoto2.setImageBitmap(thumbnail);
                         break;
                     case 3:
-                        ImageUri3=ImageUri;
+                        ImageUri3 = ImageUri;
                         mPhoto3.setImageBitmap(thumbnail);
                         break;
                     case 4:
-                        LogoUri=ImageUri;
+                        LogoUri = ImageUri;
                         mLogo.setImageBitmap(thumbnail);
                         break;
 
@@ -581,52 +519,55 @@ public class EditActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception r) {
-                Toast.makeText(this, r.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Error",r.getMessage());
             }
 
-        }catch (Exception c){
-            Toast.makeText(this, c.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception c) {
+            Log.e("Error",c.getMessage());
         }
     }
 
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
-        Bitmap bm=null;
+        Bitmap bm = null;
         if (data != null) {
             try {
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        try{mPhoto.setImageBitmap(bm);
-            Log.i("studio","done");
-            switch (imageNum){
+        try {
+
+            //  ImageUri = getImageUri(this, bm);
+            switch (imageNum) {
                 case 1:
-                    ImageUri1=ImageUri;
+                    ImageUri1 = getImageUri(this, bm);
                     mPhoto1.setImageBitmap(bm);
                     break;
                 case 2:
-                    ImageUri2=ImageUri;
+                    ImageUri2 = getImageUri(this, bm);
                     mPhoto2.setImageBitmap(bm);
                     break;
                 case 3:
-                    ImageUri3=ImageUri;
+                    ImageUri3 = getImageUri(this, bm);
                     mPhoto3.setImageBitmap(bm);
                     break;
                 case 4:
-                    LogoUri=ImageUri;
+                    LogoUri = getImageUri(this, bm);
                     mLogo.setImageBitmap(bm);
                     break;
-                default:
-                    Log.e("error","error");
 
 
-            }}catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }}
+
+            }
+        } catch (Exception e) {
+            Log.e("Error",e.getMessage());
+        }
+    }
 
     @TargetApi(Build.VERSION_CODES.M)
 
@@ -639,6 +580,7 @@ public class EditActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
 
     }
+
 
     ArrayList<String > convert(String s){
         ArrayList<String> List = new ArrayList<String>(Arrays.asList(s.split(" ")));
@@ -718,10 +660,10 @@ public class EditActivity extends AppCompatActivity {
 
         final DatabaseReference id = mDatabase.child("Places").child(PublicParamaters.PlaceRootId);
 
-        id.child("Place Name").setValue(mName.getText()+" ");
-        id.child("Place Category").setValue(mCategory.getSelectedItem()+" ");
-        id.child("Place Location").setValue(mAddress.getText()+" ");
-        id.child("Place Description").setValue(mDescription.getText()+" ");
+        id.child("Place Name").setValue(mName.getText()+"");
+        id.child("Place Category").setValue(mCategory.getSelectedItem()+"");
+        id.child("Place Location").setValue(mAddress.getText()+"");
+        id.child("Place Description").setValue(mDescription.getText()+"");
         String[]a=mTags.getText().toString().split(" ");
         for (String x:a)
         {
@@ -742,7 +684,7 @@ public class EditActivity extends AppCompatActivity {
         // Location.clear();
 
 
-        StorageReference Ref = null;
+
 
         try {
             if (mName.getText()!=null&&mAddress.getText()!=null&&mDescription.getText()!=null) {
@@ -760,15 +702,93 @@ public class EditActivity extends AppCompatActivity {
 
                     if (ImageUri1 != null) {
                         upload(URL1,ImageUri1,id,"URL-1");
+                        StorageReference Ref = null;
+                        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri1));
+
+                        Ref.putFile(ImageUri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @SuppressWarnings("VisibleForTests")
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+
+                                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                                id.child("images").child("URL-1").setValue(imageUpload);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
 
 
 
                     }
                     if (ImageUri2 != null) {
                         upload(URL2,ImageUri2,id,"URL-2");
+                        StorageReference Ref = null;
+                        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri2));
+
+                        Ref.putFile(ImageUri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @SuppressWarnings("VisibleForTests")
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+
+                                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                                id.child("images").child("URL-2").setValue(imageUpload);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                     }
                     if (ImageUri3 != null) {
                         upload(URL3,ImageUri3,id,"URL-3");
+                        StorageReference Ref = null;
+                        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri3));
+
+                        Ref.putFile(ImageUri3).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @SuppressWarnings("VisibleForTests")
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+
+                                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                                id.child("images").child("URL-3").setValue(imageUpload);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                     }
 
                 }
@@ -806,6 +826,7 @@ public class EditActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: did not delete file");
             }
         });
+        StorageReference Ref = null;
 
         Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(uri));
 
@@ -834,7 +855,7 @@ public class EditActivity extends AppCompatActivity {
         });
     }
 
-    StorageReference Ref = null;
+
 
     public void upload(final String URL, Uri uri, final DatabaseReference id, final String URL_){
         StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
@@ -854,31 +875,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(uri));
 
-        Ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @SuppressWarnings("VisibleForTests")
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-
-                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                id.child("images").child(URL_).setValue(imageUpload);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
 }

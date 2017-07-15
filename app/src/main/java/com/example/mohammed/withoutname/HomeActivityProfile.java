@@ -72,10 +72,10 @@ public class HomeActivityProfile extends AppCompatActivity {
         prepareAlbums();
 
 
-        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.home, R.drawable.home2);
-        circleMenu.addSubMenu(Color.parseColor("#258CFF"), R.drawable.i1)
-                .addSubMenu(Color.parseColor("#30A400"), R.drawable.i2)
-                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.i3);
+        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.ic_home, R.drawable.ic_home2);
+        circleMenu.addSubMenu(Color.parseColor("#258CFF"), R.drawable.ic_add)
+                .addSubMenu(Color.parseColor("#30A400"), R.drawable.ic_profile)
+                .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.ic_save);
 
 
 
@@ -153,7 +153,7 @@ public class HomeActivityProfile extends AppCompatActivity {
                 R.drawable.atm,
                 R.drawable.hospital,
                 R.drawable.fuel,
-                R.drawable.pharmcy,
+                R.drawable.pharmacy,
                 R.drawable.other};
 
         Album a = new Album("Restaurant", covers[0]);

@@ -37,6 +37,7 @@ public class SearchTagActivity extends AppCompatActivity {
     ArrayList<String > arrayString=new ArrayList <>();
     ArrayList<PublicPlaces> arrayList=new ArrayList <>();
     ArrayList<PublicPlaces> arrayList2=new ArrayList <>();
+    ListView listSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,7 @@ public class SearchTagActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_search_tag);
+        listSearch=(ListView)findViewById(R.id.TagList);
         MyLocation(this);
         SearchText("",this);
 
@@ -73,27 +75,30 @@ public class SearchTagActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 arrayList2.clear();
-                ListView listView=(ListView)findViewById(R.id.TagList);
                 String space=" ";
                 if(query.isEmpty()||query.equals(space))
                 {
-                    listView.setAdapter(new CustomListAdapter(SearchTagActivity.this, arrayList));
+                    listSearch.setAdapter(new CustomListAdapter(SearchTagActivity.this, arrayList));
                 }
                 else
                 {
                     for (int i=0;i<arrayList.size();i++)
                     {
-                        if(arrayList.get(i).Tag.contains(query))
+                        if(arrayList.get(i).Tag.contains(query.toLowerCase())
+                                ||arrayList.get(i).Tag.contains(query.toUpperCase())
+                                ||arrayList.get(i).Name.contains(query.toUpperCase())
+                                ||arrayList.get(i).Name.contains(query.toLowerCase()))
                         {
                             arrayList2.add(arrayList.get(i));
                         }
                     }
+
                     if(arrayList2.size()==0)
                     {
-                        listView.setAdapter(null);
+                        listSearch.setAdapter(null);
                     }
                     else {
-                        listView.setAdapter(new CustomListAdapter(SearchTagActivity.this, arrayList2));
+                        listSearch.setAdapter(new CustomListAdapter(SearchTagActivity.this, arrayList2));
                     }
                 }
 
@@ -168,23 +173,25 @@ public class SearchTagActivity extends AppCompatActivity {
                     try {
                         //Start Activity Without Search , Category Only
                         for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                            String URL1=issue.child("images").child("URL-1").child("url").getValue(String.class);
-                            String URL2=issue.child("images").child("URL-2").child("url").getValue(String.class);
-                            String URL3=issue.child("images").child("URL-3").child("url").getValue(String.class);
-                            Distance = GetDistance(Double.parseDouble(""+issue.child("Place Lat").getValue()) , Double.parseDouble(""+issue.child("Place Lng").getValue()));
-                            arrayList.add(new PublicPlaces(issue.child("Place Logo").child("url").getValue(String.class)
-                                    , issue.child("Place Name").getValue() + ""
-                                    , issue.child("Place Location").getValue() + ""
-                                    , Double.parseDouble("" + issue.child("Place Lng").getValue())
-                                    , Double.parseDouble(issue.child("Place Lat").getValue() + ""),Distance
-                                    ,issue.child("Place Tags").getValue()+""
-                                    ,issue.child("Place Description").getValue()+""
-                                    ,URL1+","+URL2+","+URL3
-                                    ,issue.child("Place Phone").getValue()+""
-                                    ,issue.child("Place Website").getValue()+""
-                                    ,issue.child("Place Category").getValue()+""
-                            ));
-                            arrayString.add(issue.child("Place Name").getValue() + "");
+                            String URL1 = issue.child("images").child("URL-1").child("url").getValue(String.class);
+                            String URL2 = issue.child("images").child("URL-2").child("url").getValue(String.class);
+                            String URL3 = issue.child("images").child("URL-3").child("url").getValue(String.class);
+                            Distance = GetDistance(Double.parseDouble("" + issue.child("Place Lat").getValue()), Double.parseDouble("" + issue.child("Place Lng").getValue()));
+                            if (Distance <= 10) {
+                                arrayList.add(new PublicPlaces(issue.child("Place Logo").child("url").getValue(String.class)
+                                        , issue.child("Place Name").getValue() + ""
+                                        , issue.child("Place Location").getValue() + ""
+                                        , Double.parseDouble("" + issue.child("Place Lng").getValue())
+                                        , Double.parseDouble(issue.child("Place Lat").getValue() + ""), Distance
+                                        , issue.child("Place Tags").getValue() + ""
+                                        , issue.child("Place Description").getValue() + ""
+                                        , URL1 + "," + URL2 + "," + URL3
+                                        , issue.child("Place Phone").getValue() + ""
+                                        , issue.child("Place Website").getValue() + ""
+                                        , issue.child("Place Category").getValue() + ""
+                                ));
+                                arrayString.add(issue.child("Place Name").getValue() + "");
+                            }
                         }
                     }
                     catch (Exception Ex)
@@ -193,7 +200,7 @@ public class SearchTagActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    Toast.makeText(SearchTagActivity.this, "Mis", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchTagActivity.this, "Not places in this area", Toast.LENGTH_SHORT).show();
                 }
                 try {
                     listView.setAdapter(new CustomListAdapter(SearchTagActivity.this,arrayList));
