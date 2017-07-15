@@ -2,7 +2,6 @@ package com.example.mohammed.withoutname;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,7 +21,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -43,7 +41,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -61,7 +58,7 @@ public class EditActivity extends AppCompatActivity {
     private ViewFlipper mFlipper;
     private ViewFlipper flipper;
     private float initialX;
-    int imageNum=0;
+    int imageNum=4;
     List myList = new ArrayList();
     int PageNum=1;
     private EditText mName , mDescription , mTags , mAddress , mETweb ,mETphone,mETphone2 ;
@@ -108,6 +105,68 @@ public class EditActivity extends AppCompatActivity {
         Init();
 
         RetriveData();
+
+
+        Button BTnext=(Button)findViewById(R.id.BTnext1);
+        BTnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (PageNum == 2) {
+                    flipper.showNext();
+                    PageNum++;
+
+
+                } else if (PageNum == 3) {
+
+                    //Method Submit
+
+                    PageNum++;
+                    flipper.showNext();
+
+                } else if (PageNum == 1) {
+                    PageNum++;
+
+                    flipper.showNext();
+//                        mPrevious.setEnabled(true);
+                }
+                else if (PageNum == 4) {
+
+                    //Method Submit
+
+
+
+                }
+
+            }
+        });
+
+        Button BTperevios=(Button)findViewById(R.id.BTprevious);
+        BTperevios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (PageNum == 1) {
+
+
+                } else if (PageNum == 2) {
+
+                    //                      mPrevious.setEnabled(false);
+                    PageNum--;
+                    flipper.showPrevious();
+                } else if (PageNum == 3) {
+
+                    PageNum--;
+                    flipper.showPrevious();
+                }
+                else if (PageNum == 4) {
+
+                    PageNum--;
+                    flipper.showPrevious();
+                }
+
+            }
+        });
 
 
 
@@ -157,73 +216,7 @@ public class EditActivity extends AppCompatActivity {
 
 
     }
-    @Override
-    public boolean onTouchEvent(MotionEvent touchevent) {
-        switch (touchevent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                initialX = touchevent.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                float finalX = touchevent.getX();
-                if (initialX > finalX) {
 
-                    if (PageNum == 2) {
-                        flipper.showNext();
-                        PageNum++;
-
-
-                    } else if (PageNum == 3) {
-
-                        //Method Submit
-
-                        PageNum++;
-                        flipper.showNext();
-
-                    } else if (PageNum == 1) {
-                        PageNum++;
-
-                        flipper.showNext();
-//                        mPrevious.setEnabled(true);
-                    }
-                    else if (PageNum == 4) {
-
-                        //Method Submit
-
-
-
-                    }
-
-                } else {
-                    if (flipper.getDisplayedChild() == 0)
-                        break;
-
-                    flipper.setInAnimation(this, R.anim.in_left);
-                    flipper.setOutAnimation(this, R.anim.out_right);
-
-                    if (PageNum == 1) {
-
-
-                    } else if (PageNum == 2) {
-
-                        //                      mPrevious.setEnabled(false);
-                        PageNum--;
-                        flipper.showPrevious();
-                    } else if (PageNum == 3) {
-
-                        PageNum--;
-                        flipper.showPrevious();
-                    }
-                    else if (PageNum == 4) {
-
-                        PageNum--;
-                        flipper.showPrevious();
-                    }
-
-                }
-                break;
-        }
-        return false;
-    }
     void fillSpinnerCategory(){
 
         areas.add("RESTAURANT");
@@ -252,8 +245,8 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-            imageNum=2;
-            selectImage();
+        imageNum=2;
+        selectImage();
 
 
     }
@@ -261,8 +254,8 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-            imageNum=3;
-            selectImage();
+        imageNum=3;
+        selectImage();
     }
     public void selectLogo(View v){
 
@@ -363,7 +356,7 @@ public class EditActivity extends AppCompatActivity {
                 }
                 else if (items[item].equals("Delete")) {
 
-                   DeletePhoto();
+                    DeletePhoto();
                 }
 
                 else if (items[item].equals("Cancel")) {
@@ -376,98 +369,98 @@ public class EditActivity extends AppCompatActivity {
 
     void DeletePhoto(){
         switch (imageNum) {
-        case 1:
+            case 1:
 
-            StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
-
-
-            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    // File deleted successfully
-                    Log.d(TAG, "onSuccess: deleted file");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Uh-oh, an error occurred!
-                    Log.d(TAG, "onFailure: did not delete file");
-                }
-            });
-
-            mPhoto1.setImageBitmap(null);
-            ImageUri1=null;
-            b=0;
-            break;
-        case 2:
-            photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL2);
+                StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
 
 
-            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    // File deleted successfully
-                    Log.d(TAG, "onSuccess: deleted file");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Uh-oh, an error occurred!
-                    Log.d(TAG, "onFailure: did not delete file");
-                }
-            });
+                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Log.d(TAG, "onSuccess: deleted file");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Log.d(TAG, "onFailure: did not delete file");
+                    }
+                });
 
-            mPhoto2.setImageBitmap(null);
-            ImageUri2=null;
-            n=0;
-            break;
-
-
-        case 3:
-
-            mPhoto3.setImageBitmap(null);
-            ImageUri3=null;
-            photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+                mPhoto1.setImageBitmap(null);
+                ImageUri1=null;
+                b=0;
+                break;
+            case 2:
+                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL2);
 
 
-            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    // File deleted successfully
-                    Log.d(TAG, "onSuccess: deleted file");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Uh-oh, an error occurred!
-                    Log.d(TAG, "onFailure: did not delete file");
-                }
-            });
-            // Do something here related to button 2
-            break;
+                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Log.d(TAG, "onSuccess: deleted file");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Log.d(TAG, "onFailure: did not delete file");
+                    }
+                });
 
-        case 4:
-            mLogo.setImageBitmap(null);
-            LogoUri=null;
-            photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+                mPhoto2.setImageBitmap(null);
+                ImageUri2=null;
+                n=0;
+                break;
 
 
-            photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    // File deleted successfully
-                    Log.d(TAG, "onSuccess: deleted file");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Uh-oh, an error occurred!
-                    Log.d(TAG, "onFailure: did not delete file");
-                }
-            });
-            // Do something here related to button 2
-            break;
-    }}
+            case 3:
+
+                mPhoto3.setImageBitmap(null);
+                ImageUri3=null;
+                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+
+
+                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Log.d(TAG, "onSuccess: deleted file");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Log.d(TAG, "onFailure: did not delete file");
+                    }
+                });
+                // Do something here related to button 2
+                break;
+
+            case 4:
+                mLogo.setImageBitmap(null);
+                LogoUri=null;
+                photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
+
+
+                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Log.d(TAG, "onSuccess: deleted file");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Log.d(TAG, "onFailure: did not delete file");
+                    }
+                });
+                // Do something here related to button 2
+                break;
+        }}
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -519,7 +512,7 @@ public class EditActivity extends AppCompatActivity {
             if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
                 ImageUri = data.getData();
-            Log.i("studio","done");
+                Log.i("studio","done");
             }
             else if (requestCode == REQUEST_CAMERA){
 
@@ -527,7 +520,7 @@ public class EditActivity extends AppCompatActivity {
 
                 Log.i("studio","done");
 
-                // ImageUri = data.getData();
+
             }
 
         }
@@ -556,7 +549,7 @@ public class EditActivity extends AppCompatActivity {
                 destination.createNewFile();
                 fo = new FileOutputStream(destination);
                 fo.write(bytes.toByteArray());
-//        data.setData(ImageUri);
+
                 ImageUri = data.getData();
 
                 ImageUri=getImageUri(this,thumbnail);
@@ -725,10 +718,10 @@ public class EditActivity extends AppCompatActivity {
 
         final DatabaseReference id = mDatabase.child("Places").child(PublicParamaters.PlaceRootId);
 
-        id.child("Place Name").setValue(mName.getText().toString());
-        id.child("Place Category").setValue(mCategory.getSelectedItem().toString());
-        id.child("Place Location").setValue(mAddress.getText().toString());
-        id.child("Place Description").setValue(mDescription.getText().toString());
+        id.child("Place Name").setValue(mName.getText()+" ");
+        id.child("Place Category").setValue(mCategory.getSelectedItem()+" ");
+        id.child("Place Location").setValue(mAddress.getText()+" ");
+        id.child("Place Description").setValue(mDescription.getText()+" ");
         String[]a=mTags.getText().toString().split(" ");
         for (String x:a)
         {
@@ -746,264 +739,147 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-            // Location.clear();
+        // Location.clear();
 
 
         StorageReference Ref = null;
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("uploading image");
+
         try {
-
-
-
-            if (ImageUri1 != null || ImageUri3 != null || ImageUri2 != null) {
-
+            if (mName.getText()!=null&&mAddress.getText()!=null&&mDescription.getText()!=null) {
 
 
 
 
-
-
-                if (ImageUri1 != null) {
-                    Toast.makeText(this, "212121", Toast.LENGTH_SHORT).show();
-
-                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL1);
-
-
-                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // File deleted successfully
-                            Log.d(TAG, "onSuccess: deleted file");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Uh-oh, an error occurred!
-                            Log.d(TAG, "onFailure: did not delete file");
-                        }
-                    });
-
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri1));
-
-                    Ref.putFile(ImageUri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                            id.child("images").child("URL-1").setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
-                }
-                if (ImageUri2 != null) {
-                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL2);
-
-
-                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // File deleted successfully
-                            Log.d(TAG, "onSuccess: deleted file");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Uh-oh, an error occurred!
-                            Log.d(TAG, "onFailure: did not delete file");
-                        }
-                    });
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri2));
-
-                    Ref.putFile(ImageUri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                            id.child("images").child("URL-2").setValue(imageUpload);
-                            //String uploadID=mDatabaseRef.push().getKey();
-                            // mDatabase.child(uploadID).child("images").push().setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
-                }
-                if (ImageUri3 != null) {
-                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL3);
-
-
-                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // File deleted successfully
-                            Log.d(TAG, "onSuccess: deleted file");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Uh-oh, an error occurred!
-                            Log.d(TAG, "onFailure: did not delete file");
-                        }
-                    });
-                    Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(ImageUri3));
-
-                    Ref.putFile(ImageUri3).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
-
-
-                            ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+                if (ImageUri1 != null || ImageUri3 != null || ImageUri2 != null) {
 
 
 
 
-                            id.child("images").child("URL-3").setValue(imageUpload);
-
-                            //mDatabase.child(uploadID).child("images").push().setValue(imageUpload);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            dialog.dismiss();
-
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
 
 
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    if (ImageUri1 != null) {
+                        upload(URL1,ImageUri1,id,"URL-1");
 
-                            dialog.setMessage("uploading " + (int) progress + "s");
-                        }
-                    });
+
+
+                    }
+                    if (ImageUri2 != null) {
+                        upload(URL2,ImageUri2,id,"URL-2");
+                    }
+                    if (ImageUri3 != null) {
+                        upload(URL3,ImageUri3,id,"URL-3");
+                    }
+
                 }
 
-            }
+                if (LogoUri != null) {
+                    uploadlogo(URLLOGO,LogoUri,id);
 
-            if (LogoUri != null) {
-                StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URLLOGO);
-
-
-                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
-                        Log.d(TAG, "onSuccess: deleted file");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
-                        Log.d(TAG, "onFailure: did not delete file");
-                    }
-                });
-                Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(LogoUri));
-
-                Ref.putFile(LogoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @SuppressWarnings("VisibleForTests")
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        dialog.dismiss();
-
-                        Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+                }try{
+                    Intent i=new Intent(this,HomeActivityProfile.class);
+                    startActivity(i);}catch (Exception c){
+                    Toast.makeText(this, c.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
 
-                        ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
-
-                        id.child("Place Logo").child("URL").setValue(imageUpload);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        dialog.dismiss();
-
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-
-
-                    @SuppressWarnings("VisibleForTests")
-                    @Override
-                    public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                        dialog.setMessage("uploading " + (int) progress + "s");
-                    }
-                });
-            }
-
-
-        }catch (Exception e){
+            }}catch (Exception e){
             Log.e("Error",e.getMessage());
         }
 
     }
 
+    public void uploadlogo(String urllogo, Uri uri, final DatabaseReference id) {
+        StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(urllogo);
+
+
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d(TAG, "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d(TAG, "onFailure: did not delete file");
+            }
+        });
+
+        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(uri));
+
+        Ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @SuppressWarnings("VisibleForTests")
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+
+                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                id.child("Place Logo").setValue(imageUpload);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    StorageReference Ref = null;
+
+    public void upload(final String URL, Uri uri, final DatabaseReference id, final String URL_){
+        StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
+
+
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d(TAG, "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d(TAG, "onFailure: did not delete file");
+            }
+        });
+
+        Ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(uri));
+
+        Ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @SuppressWarnings("VisibleForTests")
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+
+                Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+
+
+                ImageUpload imageUpload = new ImageUpload(null, taskSnapshot.getDownloadUrl().toString());
+
+                id.child("images").child(URL_).setValue(imageUpload);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
 }
+

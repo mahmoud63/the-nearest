@@ -16,12 +16,13 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginStart="10dp"
-            app:rlv_titleColor="#000"
-            app:rlv_backgroundColorValue="@color/error_color2"
+            app:rlv_titleColor="#fff"
+            app:rlv_backgroundColorValue="@color/control_active"
             app:rlv_titleSize="20dp"
             app:rlv_titleText="N"/>
 
         <TextView
+            android:textColor="#000"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:id="@+id/TV_Title"

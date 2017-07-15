@@ -11,16 +11,16 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_margin="5dp"
-            android:padding="3dp"
             android:id="@+id/Logo_Pic"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="desc"
-            app:civ_border_width="2dp"/>
+            app:civ_border_color="@color/control_active"
+            app:civ_border_width="1dp"/>
 
             <TextView
-
-                android:layout_marginLeft="90dp"
+                android:textColor="#000"
+                android:layout_marginLeft="60dp"
                 android:padding="5dp"
                 android:layout_gravity="center|right"
                 android:layout_width="match_parent"

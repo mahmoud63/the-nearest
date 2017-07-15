@@ -35,6 +35,8 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.2.1'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.github.Hitomis:CircleMenu:v1.0.2'
+    compile 'com.felipecsl:gifimageview:2.1.0'
+    compile 'commons-io:commons-io:2.4'
     compile 'gr.pantrif:easy-android-splash-screen:0.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.anshulagarwal06:PasswordEditText:v1.0'

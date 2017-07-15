@@ -2,51 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:layout_marginBottom="5dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/Logo_Pic"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:contentDescription="desc"
-            android:paddingRight="10dp"/>
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="desc"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_width="wrap_content"
+                android:layout_gravity="left"
+                android:textAlignment="gravity"
+                android:textColor="#000"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/Name_Text"
-                android:text="txt"
+                android:text="rfk"
                 android:textSize="20sp"/>
-
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_width="wrap_content"
+                android:layout_gravity="left"
+                android:textAlignment="gravity"
+                android:textColor="#000"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/Location_Text"
                 android:text="txt"
                 android:textSize="20sp"/>
-
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:layout_gravity="bottom|right|end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/Distance_Text"
                 android:text="txt"
-                android:textSize="20sp"/>
+                android:textSize="12sp"/>
 
         </LinearLayout>
 

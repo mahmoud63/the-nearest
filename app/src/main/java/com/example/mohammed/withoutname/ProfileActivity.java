@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -21,18 +23,23 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
-
+    ArrayList<String > arrayString=new ArrayList <>();
+    ArrayList<PublicPlaces> arrayList2=new ArrayList <>();
     FloatingActionMenu materialDesignFAM;
     FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3;
 
@@ -43,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_profile);
+
 
         RetriveLocal();
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
@@ -83,12 +91,28 @@ public class ProfileActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                            String URL1=issue.child("images").child("URL-1").child("url").getValue(String.class);
+                            String URL2=issue.child("images").child("URL-2").child("url").getValue(String.class);
+                            String URL3=issue.child("images").child("URL-3").child("url").getValue(String.class);
                             arrayList.add(new PublicPlaces(
                                             issue.child("Place Logo").child("url").getValue().toString()
                                             , issue.child("Place Name").getValue() + ""
                                             , issue.getKey() + ""
                                     )
                             );
+                            arrayList2.add(new PublicPlaces(issue.child("Place Logo").child("url").getValue(String.class)
+                                    , issue.child("Place Name").getValue() + ""
+                                    , issue.child("Place Location").getValue() + ""
+                                    , Double.parseDouble("" + issue.child("Place Lng").getValue())
+                                    , Double.parseDouble(issue.child("Place Lat").getValue() + ""),0
+                                    ,issue.child("Place Tags").getValue()+""
+                                    ,issue.child("Place Description").getValue()+""
+                                    ,URL1+","+URL2+","+URL3
+                                    ,issue.child("Place Phone").getValue()+""
+                                    ,issue.child("Place Website").getValue()+""
+                                    ,issue.child("Place Category").getValue()+""
+                            ));
+                            arrayString.add(issue.child("Place Name").getValue() + "");
                         }
                     } else {
                         Toast.makeText(ProfileActivity.this, "Mis", Toast.LENGTH_SHORT).show();
@@ -138,7 +162,11 @@ public class ProfileActivity extends AppCompatActivity {
                         public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                             switch (index){
                                 case 0:
-                                    Toast.makeText(ProfileActivity.this, "1"+arrayList.get(position).Name, Toast.LENGTH_SHORT).show();
+                                    PublicParamaters.PlaceList.clear();
+                                    PublicPlaces publicPlaces=arrayList2.get(position);
+                                    PublicParamaters.PlaceList.add(publicPlaces);
+                                    Intent show = new Intent(context, ShowDetailsActivity.class);
+                                    startActivity(show);
                                     break;
                                 case 1:
                                     PublicParamaters.PlaceRootId=arrayList.get(position).RootId;
@@ -146,6 +174,14 @@ public class ProfileActivity extends AppCompatActivity {
                                     startActivity(intent);
                                      break;
                                 case 2:
+                                    PublicParamaters.PlaceList.clear();
+                                    publicPlaces=arrayList2.get(position);
+                                    PublicParamaters.PlaceList.add(publicPlaces);
+                                    String []arr=PublicParamaters.PlaceList.get(0).Image.split(",");
+                                    //delete method arr[i]
+                                    DeletePhoto(arr[0]);DeletePhoto(arr[1]);DeletePhoto(arr[2]);
+                                    DeletePhoto(PublicParamaters.PlaceList.get(0).Logo);
+                                    //Delete From ListView
                                     int po=position;
                                     reference.child("Places").child(arrayList.get(po).RootId).removeValue();
                                     arrayList.remove(po);
@@ -181,6 +217,24 @@ public class ProfileActivity extends AppCompatActivity {
         {
             Toast.makeText(this,ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+    private void DeletePhoto(String URL){
+        StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
+
+
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d("", "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d("", "onFailure: did not delete file");
+            }
+        });
     }
     public void Logout()
     {
@@ -290,5 +344,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                 });
     }
+
 
 }

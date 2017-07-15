@@ -453,9 +453,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             llll.setLatitude(latLng2.latitude);
             llll.setLongitude(latLng2.longitude);
 
-            Toast.makeText(this, mLastLocation.getLatitude() + "\n"+mLastLocation.getLongitude()+"\n"
+          /*  Toast.makeText(this, mLastLocation.getLatitude() + "\n"+mLastLocation.getLongitude()+"\n"
                         +mLastLocation.getSpeed()+"\n"+mLastLocation.getTime()+"\n"+mLastLocation.distanceTo(llll)
-                    , Toast.LENGTH_LONG).show();
+                    , Toast.LENGTH_LONG).show();*/
         }
         catch (Exception ex)
         {

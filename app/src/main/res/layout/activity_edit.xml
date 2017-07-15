@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/RelativeLayout02"
-        android:layout_weight="1">
+        android:layout_weight="9">
 
         <ViewFlipper
             android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -228,55 +228,55 @@
                     android:layout_height="match_parent">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="photos of this place"
-                    android:id="@+id/TVphotos"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="photos of this place"
+                        android:id="@+id/TVphotos"/>
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="8sp" />
-                <ImageView
-                    android:onClick="selectImage"
-                    android:layout_width="match_parent"
-                    android:src="@drawable/add"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:id="@+id/IVimage"
-                    android:layout_below="@+id/TVphotos"
-                    />
+                    <ImageView
+                        android:onClick="selectImage"
+                        android:layout_width="match_parent"
+                        android:src="@drawable/add"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:id="@+id/IVimage"
+                        android:layout_below="@+id/TVphotos"
+                        />
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="8sp" />
-                <ImageView
-                    android:onClick="selectImage2"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:id="@+id/IVimage2"
-                    android:layout_weight="1"
-                    android:src="@drawable/add"
-                    android:layout_below="@+id/IVimage"
-                    />
+                    <ImageView
+                        android:onClick="selectImage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/IVimage2"
+                        android:layout_weight="1"
+                        android:src="@drawable/add"
+                        android:layout_below="@+id/IVimage"
+                        />
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="8sp" />
-                <ImageView
-                    android:id="@+id/IVimage0"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    ></ImageView>
+                    <ImageView
+                        android:id="@+id/IVimage0"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        ></ImageView>
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="8sp" />
-                <ImageView
-                    android:onClick="selectImage3"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:id="@+id/IVimage3"
-                    android:layout_weight="1"
-                    android:src="@drawable/add"
-                    android:layout_below="@+id/IVimage2"
-                    />
+                    <ImageView
+                        android:onClick="selectImage3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/IVimage3"
+                        android:layout_weight="1"
+                        android:src="@drawable/add"
+                        android:layout_below="@+id/IVimage2"
+                        />
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -321,6 +321,8 @@
 
 
 
+
+
     </RelativeLayout>
 
 
@@ -331,6 +333,35 @@
 
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+
+        android:layout_weight="1.5"
+        android:layout_below="@+id/Flipper"
+
+
+        >
+
+        <Button
+            android:id="@+id/BTprevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="29dp"
+            android:text="previous" />
+
+        <Button
+            android:id="@+id/BTnext1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/BTprevious"
+            android:layout_marginEnd="28dp"
+            android:text="Next" />
+    </RelativeLayout>
 
 
 </LinearLayout>

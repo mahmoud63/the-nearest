@@ -35,7 +35,10 @@ public class SaveMyLocationActivity extends AppCompatActivity {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(latitude!=0&&longitude!=0&&ValidTitle()&&ValidDescription())
+                if(ValidTitle()&&ValidDescription())
+                {
+                    MyLocation();
+                if(latitude!=0&&longitude!=0)
                 {
                     Database.InsertIntoSaves("Saves",Title.getText().toString(),Description.getText().toString()
                             ,""+longitude,""+latitude,SaveMyLocationActivity.this);
@@ -45,6 +48,7 @@ public class SaveMyLocationActivity extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(SaveMyLocationActivity.this, "Pls Your GPS", Toast.LENGTH_SHORT).show();
+                }
                 }
             }
         });

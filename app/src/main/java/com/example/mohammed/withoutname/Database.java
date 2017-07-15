@@ -71,7 +71,6 @@ public class Database {
                 } while (cursor.moveToNext());
             }
         } catch (Exception ex) {
-            Toast.makeText(context,ex.getMessage() , Toast.LENGTH_LONG).show();
         }
         return arrayList;
     }

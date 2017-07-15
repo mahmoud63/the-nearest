@@ -45,9 +45,12 @@
         android:layout_height="15sp" />
 
     <Button
+        android:textColor="#fff"
+        android:textSize="18dp"
         android:layout_margin="5sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@color/control_active"
+        android:layout_height="50dp"
         android:text="Save"
         android:id="@+id/BT_Save"
         />

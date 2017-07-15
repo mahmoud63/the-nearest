@@ -1,6 +1,7 @@
 package com.example.mohammed.withoutname;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -66,7 +68,11 @@ public class ShowDetailsActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_show_details);
 
+
         Initmap();
+
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.mToolbar);
         setSupportActionBar(toolbar);
@@ -107,6 +113,13 @@ public class ShowDetailsActivity extends AppCompatActivity
     }
 
 
+    public void Navigation(View view)
+    {
+        PublicParamaters.lon=Double.parseDouble(PublicParamaters.PlaceList.get(0).Lang+"");
+        PublicParamaters.lat=Double.parseDouble(PublicParamaters.PlaceList.get(0).Lat+"");
+        Intent m=new Intent(ShowDetailsActivity.this,MapsActivity.class);
+        startActivity(m);
+    }
 
 
 
@@ -211,6 +224,7 @@ public class ShowDetailsActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 
 
     //MapActivity

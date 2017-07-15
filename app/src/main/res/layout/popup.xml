@@ -19,6 +19,7 @@
             android:orientation="vertical">
 
        <TextView
+           android:textColor="#000"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="Place Title"
@@ -39,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="8sp" />
         <TextView
+            android:textColor="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Place Title"
@@ -56,28 +58,62 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="8sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/BT_Go"
-                android:text="Go to Map"/>
+
+           <LinearLayout
+               android:background="#b3b3b3"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:orientation="horizontal">
+               <de.hdodenhof.circleimageview.CircleImageView
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   app:civ_fill_color="#b3b3b3"
+                   android:src="@drawable/ic_navigation"
+                   android:layout_weight="3"/>
+               <Button
+                   android:background="#b3b3b3"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:id="@+id/BT_Go"
+                   android:textColor="#fff"
+                   android:text="Nav"/>
+           </LinearLayout>
+
 
             <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"/>
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/BT_delete"
-                android:text="Delete Place"/>
+
+
+            <LinearLayout
+                android:background="@color/control_active"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:civ_fill_color="@color/control_active"
+                    android:src="@drawable/ic_delete"
+                    android:layout_weight="3"/>
+                <Button
+                    android:background="@color/control_active"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/BT_delete"
+                    android:text="Delete"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         </LinearLayout>

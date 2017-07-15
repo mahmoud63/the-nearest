@@ -63,7 +63,7 @@ public class CustomAdapter extends BaseAdapter {
 
         try {
             Glide.with(context)
-                    .load(placesList.get(position).Logo)
+                    .load(placesList.get(position).Logo).placeholder(R.mipmap.ic_launcher)
                     .into(holder.logo_pic);
         }
         catch (Exception ex) {

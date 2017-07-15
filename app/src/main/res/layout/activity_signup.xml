@@ -15,18 +15,21 @@
         android:layout_marginRight="10dp">
 
         <ImageView
-            android:layout_marginBottom="30dp"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:background="@drawable/powered_by_google_light"/>
+            android:layout_weight="1.6"
+            android:src="@drawable/lo2"
+            />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
         <android.support.design.widget.TextInputLayout
             android:id="@+id/TIL_Name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.2"
-            app:errorTextAppearance="@color/error_color2">
+            android:layout_weight="1">
             <EditText
                 android:saveEnabled="true"
                 android:layout_width="match_parent"
@@ -37,13 +40,16 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/TIL_Email"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.2"
-            app:errorTextAppearance="@color/error_color2">
+            android:layout_weight="1">
             <EditText
                 android:saveEnabled="true"
                 android:layout_width="match_parent"
@@ -54,12 +60,16 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:id="@+id/TIL_Password"
             android:layout_height="0dp"
-            android:layout_weight="1.2">
+            android:layout_weight="1">
             <in.anshul.libray.PasswordEditText
                 android:id="@+id/Et_Password"
                 android:layout_width="match_parent"
@@ -67,14 +77,16 @@
                 android:hint="Password"/>
 
         </android.support.design.widget.TextInputLayout>
-
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/TIL_Phone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.2"
-            app:errorTextAppearance="@color/error_color2">
+            android:layout_weight="1">
             <EditText
                 android:saveEnabled="true"
                 android:layout_width="match_parent"
@@ -89,16 +101,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".7"
+            android:layout_weight=".6"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="3dp">
             <Button
+                android:textSize="18dp"
+                android:textColor="#fff"
+                android:background="@color/control_active"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Sign Up"
                 android:id="@+id/BT_Sign_up"/>
+
         </LinearLayout>
 
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
     </LinearLayout>
 

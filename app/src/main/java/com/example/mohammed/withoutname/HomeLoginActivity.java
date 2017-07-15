@@ -69,7 +69,7 @@ public class HomeLoginActivity extends AppCompatActivity {
         prepareAlbums();
 
 
-        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.home, R.drawable.home2);
+        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.ic_home, R.drawable.ic_home2);
         circleMenu.addSubMenu(Color.parseColor("#258CFF"), R.drawable.i1)
                 .addSubMenu(Color.parseColor("#30A400"), R.drawable.home)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.i3);

@@ -1,7 +1,6 @@
 package com.example.mohammed.withoutname;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +33,6 @@ public class PublicParamaters {
         }
         catch (Exception ex)
         {
-            Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
         }
         return Text;
     }
@@ -47,7 +45,6 @@ public class PublicParamaters {
         }
         catch (Exception ex)
         {
-            Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
         }
     }
 }
